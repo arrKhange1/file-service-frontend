@@ -1,7 +1,10 @@
+import { FolderIcon } from '../../../shared/icons/FolderIcon';
+
 export const ControlPanel = () => {
   return (
     <>
-      <div>dsd</div>
+      <FolderIcon isActive={false} />
+      <FolderIcon isActive={true} />
     </>
   );
 };
