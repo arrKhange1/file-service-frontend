@@ -1,5 +1,5 @@
 import { DirectoryItem } from '../../../entities/ui/DirectoryItem';
-import { PartitionList } from '../../../widgets/partition-list/ui/Partition-list';
+import { PartitionList } from '../../../widgets/partition-list/ui/PartitionList';
 
 export const ControlPanel = () => {
   return (

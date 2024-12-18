@@ -1,22 +1,16 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import { CollapseExpandIcon } from '../../../shared/icons/CollapseExpandIcon';
 import { DirectoryItem } from '../../../entities/ui/DirectoryItem';
 import styles from './PartitionList.module.scss';
+import { CollapseExpandIcon } from '../../../shared/icons/collapse-expand-icon/CollapseExpandIcon';
 
 export const PartitionList = () => {
   return (
     <>
       <Accordion
-        expandIcon={<CollapseExpandIcon type={'expand'} width={6} height={9} />}
-        collapseIcon={<CollapseExpandIcon type={'collapse'} width={6} height={9} />}
+        expandIcon={<CollapseExpandIcon type={'expand'} />}
+        collapseIcon={<CollapseExpandIcon type={'collapse'} />}
       >
-        <AccordionTab
-          header={
-            <div className={styles.listHeader} data-header-list>
-              Your dropbox
-            </div>
-          }
-        >
+        <AccordionTab header={<div className={styles.listHeader}>Your dropbox</div>}>
           <DirectoryItem isActive={true} name="Dir1" />
           <DirectoryItem isActive={false} name="Директория 2" />
         </AccordionTab>

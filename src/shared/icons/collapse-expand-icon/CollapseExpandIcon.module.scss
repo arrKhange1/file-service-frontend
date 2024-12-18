@@ -1,0 +1,22 @@
+.iconWrapper {
+  padding: 10px;
+  background-color: red;
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  position: relative;
+}
+
+.iconWrapper > svg {
+  position: absolute;
+}
+
+.iconWrapper > svg[data-icon-expand] {
+  top: 5px;
+  right: 4px;
+}
+
+.iconWrapper > svg[data-icon-collapse] {
+  top: 7px;
+  right: 5px;
+}
