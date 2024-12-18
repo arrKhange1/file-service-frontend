@@ -1,7 +1,7 @@
 @use './fonts';
 @use './colors' as *;
 
-body {
+:root {
   --jost-regular-400: #{fonts.$jost-regular-400};
   --jost-medium-500: #{fonts.$jost-medium-500};
   --ibm-plex-sans-regular-400: #{fonts.$ibm-plex-sans-regular-400};
@@ -22,10 +22,19 @@ body {
   --lemon-bitter-10: #{$lemon-bitter-10};
   --white: #{$white};
   --white-bg: #{$white-bg};
+}
 
+html,
+body {
+  height: 100%;
+}
+
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  height: 100%;
   font-family: var(--ibm-plex-sans-regular-400);
   color: var(--black-raisin-100);
+  background-color: var(--isabeline-100);
 }
