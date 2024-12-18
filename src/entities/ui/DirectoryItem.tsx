@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import { DirectoryIcon } from '../../shared/icons/DirectoryIcon';
+import styles from './DirectoryItem.module.scss';
 
 interface DirectoryItemProps {
   isActive: boolean;
@@ -8,7 +10,7 @@ interface DirectoryItemProps {
 export const DirectoryItem = ({ isActive, name }: DirectoryItemProps) => {
   return (
     <>
-      <div style={{ display: 'flex', gap: '12px' }}>
+      <div className={clsx(styles.item, { [styles.itemActive]: isActive })}>
         <DirectoryIcon isActive={isActive} />
         <span>{name}</span>
       </div>
