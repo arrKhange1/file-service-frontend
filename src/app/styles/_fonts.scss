@@ -1,0 +1,30 @@
+$jost-regular-400: 'Jost-Regular-400';
+$jost-medium-500: 'Jost-Medium-500';
+$ibm-plex-sans-regular-400: 'IBM-Plex-Sans-Regular-400';
+$ibm-plex-sans-medium-500: 'IBM-Plex-Sans-Medium-500';
+$ibm-plex-sans-bold-700: 'IBM-Plex-Sans-Bold-700';
+
+@font-face {
+  font-family: $jost-regular-400;
+  src: url('../fonts/Jost-Regular.ttf');
+}
+
+@font-face {
+  font-family: $jost-medium-500;
+  src: url('../fonts/Jost-Medium.ttf');
+}
+
+@font-face {
+  font-family: $ibm-plex-sans-regular-400;
+  src: url('../fonts/IBMPlexSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: $ibm-plex-sans-medium-500;
+  src: url('../fonts/IBMPlexSans-Medium.ttf');
+}
+
+@font-face {
+  font-family: $ibm-plex-sans-bold-700;
+  src: url('../fonts/IBMPlexSans-Bold.ttf');
+}

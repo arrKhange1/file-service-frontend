@@ -12,7 +12,7 @@ export const PartitionList = () => {
       >
         <AccordionTab header={<div className={styles.listHeader}>Your dropbox</div>}>
           <DirectoryItem isActive={true} name="Dir1" />
-          <DirectoryItem isActive={false} name="Dir2" />
+          <DirectoryItem isActive={false} name="Директория 2" />
         </AccordionTab>
       </Accordion>
     </>
