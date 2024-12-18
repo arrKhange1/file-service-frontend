@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { HomePage } from '../pages/home/ui/HomePage.tsx';
+import { HomePage } from '../pages/home/ui/home-page/HomePage.tsx';
 import { PartitionPage } from '../pages/partition/ui/PartitionPage.tsx';
 import { PrimeReactProvider } from 'primereact/api';
 
