@@ -1,4 +1,4 @@
-import { FolderIcon } from '../../shared/icons/DirectoryIcon';
+import { DirectoryIcon } from '../../shared/icons/DirectoryIcon';
 
 interface DirectoryItemProps {
   isActive: boolean;
@@ -9,7 +9,7 @@ export const DirectoryItem = ({ isActive, name }: DirectoryItemProps) => {
   return (
     <>
       <div style={{ display: 'flex', gap: '12px' }}>
-        <FolderIcon isActive={isActive} />
+        <DirectoryIcon isActive={isActive} />
         <span>{name}</span>
       </div>
     </>
