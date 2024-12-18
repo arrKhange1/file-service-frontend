@@ -1,3 +1,5 @@
-.listHeader {
-    margin-left: 1rem;
+.listHeader[data-header-list] {
+  margin-left: 1rem;
+  font-family: var(--jost-regular-400);
+  color: unset;
 }

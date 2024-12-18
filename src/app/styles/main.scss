@@ -1,13 +1,31 @@
 @use './fonts';
+@use './colors' as *;
 
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   --jost-regular-400: #{fonts.$jost-regular-400};
   --jost-medium-500: #{fonts.$jost-medium-500};
   --ibm-plex-sans-regular-400: #{fonts.$ibm-plex-sans-regular-400};
   --ibm-plex-sans-medium-500: #{fonts.$ibm-plex-sans-medium-500};
   --ibm-plex-sans-bold-700: #{fonts.$ibm-plex-sans-bold-700};
+  --black-raisin-100: #{$black-raisin-100};
+  --black-raisin-54: #{$black-raisin-54};
+  --black-raisin-26: #{$black-raisin-26};
+  --black-raisin-12: #{$black-raisin-12};
+  --black-raisin-03: #{$black-raisin-03};
+  --black-raisin-03: #{$black-raisin-03};
+  --blue-ultramarine-100: #{$blue-ultramarine-100};
+  --blue-ultramarine-50: #{$blue-ultramarine-50};
+  --blue-ultramarine-10: #{$blue-ultramarine-10};
+  --isabeline-100: #{$isabeline-100};
+  --lemon-bitter-100: #{$lemon-bitter-100};
+  --lemon-bitter-50: #{$lemon-bitter-50};
+  --lemon-bitter-10: #{$lemon-bitter-10};
+  --white: #{$white};
+  --white-bg: #{$white-bg};
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: var(--ibm-plex-sans-regular-400);
+  color: var(--black-raisin-100);
 }
