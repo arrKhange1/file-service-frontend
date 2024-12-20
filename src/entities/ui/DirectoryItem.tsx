@@ -3,11 +3,11 @@ import { DirectoryIcon } from '../../shared/icons/DirectoryIcon';
 import styles from './DirectoryItem.module.scss';
 
 interface DirectoryItemProps {
-  isActive: boolean;
+  isActive?: boolean;
   name: string;
 }
 
-export const DirectoryItem = ({ isActive, name }: DirectoryItemProps) => {
+export const DirectoryItem = ({ isActive = false, name }: DirectoryItemProps) => {
   return (
     <>
       <div className={clsx(styles.item, { [styles.itemActive]: isActive })}>
