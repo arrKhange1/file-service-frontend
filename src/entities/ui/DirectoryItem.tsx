@@ -5,12 +5,13 @@ import styles from './DirectoryItem.module.scss';
 interface DirectoryItemProps {
   isActive?: boolean;
   name: string;
+  onClick: () => void;
 }
 
-export const DirectoryItem = ({ isActive = false, name }: DirectoryItemProps) => {
+export const DirectoryItem = ({ isActive = false, name, onClick }: DirectoryItemProps) => {
   return (
     <>
-      <div className={clsx(styles.item, { [styles.itemActive]: isActive })}>
+      <div onClick={onClick} className={clsx(styles.item, { [styles.itemActive]: isActive })}>
         <DirectoryIcon isActive={isActive} />
         <span>{name}</span>
       </div>
