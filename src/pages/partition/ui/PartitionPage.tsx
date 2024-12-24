@@ -1,3 +1,9 @@
+import styles from './PartitionPage.module.scss';
+
 export const PartitionPage = () => {
-  return <>Its PartitionPage</>;
+  return (
+    <>
+      <div className={styles.partitionPage}>Its Partition Page</div>
+    </>
+  );
 };

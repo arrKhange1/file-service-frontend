@@ -5,7 +5,7 @@ import styles from './DirectoryItem.module.scss';
 interface DirectoryItemProps {
   isActive?: boolean;
   name: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const DirectoryItem = ({ isActive = false, name, onClick }: DirectoryItemProps) => {

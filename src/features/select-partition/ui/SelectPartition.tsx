@@ -26,6 +26,8 @@ export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
     navigate(`/${partitionId}`);
   }
 
+  console.log('select partition');
+
   return (
     <AccordionList headerText={headerText}>
       {nodes?.length !== 0 &&

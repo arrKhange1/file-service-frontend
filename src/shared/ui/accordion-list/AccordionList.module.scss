@@ -3,3 +3,8 @@
   font-family: var(--jost-regular-400);
   color: var(--black-raisin-100);
 }
+
+.list {
+  max-height: 200px;
+  overflow: auto;
+}
