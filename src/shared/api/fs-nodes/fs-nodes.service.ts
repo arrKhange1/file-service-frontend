@@ -21,6 +21,11 @@ export interface DeleteNodeById {
     id: string;
 }
 
+export interface AddDirectory {
+    name: string;
+    parentId: string;
+}
+
 enum FileSystemNodeQueryKey {
     FS_NODES = 'fs-nodes'
 }
@@ -40,5 +45,10 @@ export class FileSystemNodeService {
     static async deleteNodeById(params: DeleteNodeById): Promise<number>  {
         const response = await api.delete(`${FileSystemNodeService.fsNodesUrl}/${params.id}`);
         return response.status;
+    }
+
+    static async addDirectory(dirToAdd: AddDirectory): Promise<DirectoryNode>  {
+        const response = await api.post(`${FileSystemNodeService.fsNodesUrl}/directory`, dirToAdd);
+        return response.data as DirectoryNode;
     }
 }

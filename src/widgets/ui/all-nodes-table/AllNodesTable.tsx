@@ -25,6 +25,18 @@ interface FileSystemNodeWithSubRows extends FileSystemNode {
 
 ////
 
+function addNode(
+  oldData: FileSystemNodeWithSubRows[],
+  id: string,
+  nodeAdd: FileSystemNodeWithSubRows,
+): FileSystemNodeWithSubRows[] {
+  const addFn = (rows: FileSystemNodeWithSubRows[], id: string, row: FileSystemNodeWithSubRows) => {
+    const rowWithAddedNode: FileSystemNodeWithSubRows = { ...row, subRows: [...(row.subRows ?? []), nodeAdd] };
+    return rows.map((row) => (row._id === id ? rowWithAddedNode : row));
+  };
+  return mutateNodes(oldData, id, addFn);
+}
+
 function deleteNode(oldData: FileSystemNodeWithSubRows[], id: string): FileSystemNodeWithSubRows[] {
   const deleteFn = (rows: FileSystemNodeWithSubRows[]) => rows.filter((row) => row._id !== id);
   return mutateNodes(oldData, id, deleteFn);
@@ -43,11 +55,16 @@ function updateNode(
 function mutateNodes(
   oldData: FileSystemNodeWithSubRows[],
   id: string,
-  mutateFn: (rows: FileSystemNodeWithSubRows[], id: string) => FileSystemNodeWithSubRows[],
+  mutateFn: (
+    rows: FileSystemNodeWithSubRows[],
+    id: string,
+    row: FileSystemNodeWithSubRows,
+  ) => FileSystemNodeWithSubRows[],
 ): FileSystemNodeWithSubRows[] {
   function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
     if (!oldData.length) return [];
-    if (rows.some((row) => row._id === id)) return mutateFn(rows, id);
+    const searchingRow = rows.find((row) => row._id === id);
+    if (searchingRow !== undefined) return mutateFn(rows, id, searchingRow);
     return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
   }
 
@@ -107,14 +124,6 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
             }}
           >
             <div>
-              <button
-                onClick={async () => {
-                  const status = await FileSystemNodeService.deleteNodeById({ id: row.original._id });
-                  if (200 === status) setData((prevData) => deleteNode(prevData, row.original._id));
-                }}
-              >
-                Delete
-              </button>
               <IndeterminateCheckbox
                 {...{
                   checked: row.getIsSelected(),
@@ -141,7 +150,28 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
               ) : (
                 '🔵'
               )}{' '}
-              {getValue<boolean>()}
+              {getValue<boolean>()}{' '}
+              {row.original.type === 'DIRECTORY' && (
+                <button
+                  onClick={async () => {
+                    const dir = await FileSystemNodeService.addDirectory({
+                      name: 'New Dir',
+                      parentId: row.original._id,
+                    });
+                    setData((prevData) => addNode(prevData, row.original._id, dir));
+                  }}
+                >
+                  Add Dir
+                </button>
+              )}
+              <button
+                onClick={async () => {
+                  const status = await FileSystemNodeService.deleteNodeById({ id: row.original._id });
+                  if (200 === status) setData((prevData) => deleteNode(prevData, row.original._id));
+                }}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ),
