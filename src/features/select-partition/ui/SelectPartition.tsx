@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
 import { useNavigate, useParams } from 'react-router';
 
-interface SelectPartitionProps {
+export interface SelectPartitionProps {
   headerText: string;
 }
 

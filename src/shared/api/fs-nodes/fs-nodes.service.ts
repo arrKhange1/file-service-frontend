@@ -1,19 +1,17 @@
 import { api } from "../base";
 
-interface NodeBase {
+export interface FileSystemNode {
     _id: string;
     parentId: string;
     name: string;
     type: string;
 }
 
-export type DirectoryNode = NodeBase;
+export type DirectoryNode = FileSystemNode;
 
-export interface FileNode {
+export interface FileNode extends FileSystemNode {
     description: string;
 }
-
-export type FileSystemNode = DirectoryNode & FileNode;
 
 export interface FindNodesByParentRequestDTO {
     parentId: string;
