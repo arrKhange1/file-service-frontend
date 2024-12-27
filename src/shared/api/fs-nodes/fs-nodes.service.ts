@@ -17,6 +17,10 @@ export interface FindNodesByParentRequestDTO {
     parentId: string;
 }
 
+export interface DeleteNodeById {
+    id: string;
+}
+
 enum FileSystemNodeQueryKey {
     FS_NODES = 'fs-nodes'
 }
@@ -31,5 +35,10 @@ export class FileSystemNodeService {
             params 
         });
         return response.data as FileSystemNode[];
+    }
+
+    static async deleteNodeById(params: DeleteNodeById): Promise<number>  {
+        const response = await api.delete(`${FileSystemNodeService.fsNodesUrl}/${params.id}`);
+        return response.status;
     }
 }

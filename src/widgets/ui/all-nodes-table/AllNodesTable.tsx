@@ -12,6 +12,7 @@ import React, { HTMLProps, useEffect, useState } from 'react';
 import { FileSystemNode, FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
 import { useQuery } from '@tanstack/react-query';
 import { getCustomExpandedRowModel } from './CustomExpandedRowModel';
+import { HttpStatusCode } from 'axios';
 
 interface AllNodeTableProps {
   firstLevelNodes: FileSystemNodeWithSubRows[];
@@ -22,19 +23,53 @@ interface FileSystemNodeWithSubRows extends FileSystemNode {
   subRows?: FileSystemNodeWithSubRows[];
 }
 
-function updateNodes(
+////
+
+function deleteNode(oldData: FileSystemNodeWithSubRows[], id: string): FileSystemNodeWithSubRows[] {
+  const deleteFn = (rows: FileSystemNodeWithSubRows[]) => rows.filter((row) => row._id !== id);
+  return mutateNodes(oldData, id, deleteFn);
+}
+
+function updateNode(
   oldData: FileSystemNodeWithSubRows[],
   id: string,
   nodeUpdate: Partial<FileSystemNodeWithSubRows>,
 ): FileSystemNodeWithSubRows[] {
+  const updateFn = (rows: FileSystemNodeWithSubRows[]) =>
+    rows.map((row) => (row._id === id ? { ...row, ...nodeUpdate } : row));
+  return mutateNodes(oldData, id, updateFn);
+}
+
+function mutateNodes(
+  oldData: FileSystemNodeWithSubRows[],
+  id: string,
+  mutateFn: (rows: FileSystemNodeWithSubRows[], id: string) => FileSystemNodeWithSubRows[],
+): FileSystemNodeWithSubRows[] {
   function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
     if (!oldData.length) return [];
-    if (rows.some((row) => row._id === id))
-      return rows.map((row) => (row._id === id ? { ...row, ...nodeUpdate } : row));
+    if (rows.some((row) => row._id === id)) return mutateFn(rows, id);
     return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
   }
+
   return nodeUpdater(oldData);
 }
+
+// function updateNode(
+//   oldData: FileSystemNodeWithSubRows[],
+//   id: string,
+//   nodeUpdate: Partial<FileSystemNodeWithSubRows>,
+// ): FileSystemNodeWithSubRows[] {
+//   function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
+//     if (!oldData.length) return [];
+//     if (rows.some((row) => row._id === id))
+//       return rows.map((row) => (row._id === id ? { ...row, ...nodeUpdate } : row));
+//     return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
+//   }
+
+//   return nodeUpdater(oldData);
+// }
+
+///
 
 export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
   const columns = React.useMemo<ColumnDef<FileSystemNodeWithSubRows>[]>(
@@ -72,6 +107,14 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
             }}
           >
             <div>
+              <button
+                onClick={async () => {
+                  const status = await FileSystemNodeService.deleteNodeById({ id: row.original._id });
+                  if (200 === status) setData((prevData) => deleteNode(prevData, row.original._id));
+                }}
+              >
+                Delete
+              </button>
               <IndeterminateCheckbox
                 {...{
                   checked: row.getIsSelected(),
@@ -86,10 +129,7 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
                       if (!row.original.subRows) {
                         const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
                         console.log(data.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)));
-                        setData((prevData) =>
-                          // prevData.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)),
-                          updateNodes(prevData, row.original._id, { subRows }),
-                        );
+                        setData((prevData) => updateNode(prevData, row.original._id, { subRows }));
                       }
                       row.getToggleExpandedHandler()();
                     },
