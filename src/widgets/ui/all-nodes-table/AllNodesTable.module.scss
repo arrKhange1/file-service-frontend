@@ -5,6 +5,14 @@
   width: 100%;
 }
 
+tr:first-child > td {
+  padding-top: 0.875em;
+}
+
+tr + tr > td {
+  padding-top: 1em;
+}
+
 th,
 td {
   max-width: 0;
