@@ -16,9 +16,7 @@ export const PartitionPage = () => {
 
   return (
     <div className={styles.partitionPage}>
-      {!isLoading && (
-        <AllNodesTable firstLevelNodes={allFirstLevelNodes ?? []} rootLevelId={params.partitionId ?? ''} />
-      )}
+      {!isLoading && <AllNodesTable firstLevelNodes={allFirstLevelNodes ?? []} />}
     </div>
   );
 };

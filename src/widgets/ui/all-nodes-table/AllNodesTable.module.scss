@@ -1,0 +1,23 @@
+.table {
+  padding: 1em 1.5em 1.6em 1.5em;
+  background-color: var(--white);
+  border-radius: 1em;
+  width: 100%;
+}
+
+th,
+td {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.header {
+  font-size: 0.875rem;
+  color: var(--black-raisin-54);
+}
+
+.headerCell {
+  text-align: left;
+}
