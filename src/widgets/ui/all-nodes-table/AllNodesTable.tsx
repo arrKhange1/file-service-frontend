@@ -176,6 +176,7 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
               className={styles.tableRow}
               key={row.id}
               onClick={async () => {
+                if (!row.getCanExpand()) return;
                 if (!row.original.subRows) {
                   const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
                   console.log(data.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)));
