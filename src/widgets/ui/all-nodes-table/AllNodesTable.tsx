@@ -4,13 +4,13 @@ import {
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import React, { useEffect } from 'react';
 import { FileSystemNode, FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
 import styles from './AllNodesTable.module.scss';
+import { DirectoryIcon } from '../../../shared/icons/DirectoryIcon';
+import { FileIcon } from '../../../shared/icons/FileIcon';
 
 interface AllNodeTableProps {
   firstLevelNodes: FileSystemNodeWithSubRows[];
@@ -74,48 +74,17 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
       {
         id: '1',
         size: 40,
-        // minSize: 250,
         accessorFn: (row) => row.name,
-        header: ({ table }) => (
-          <>
-            <button
-              {...{
-                onClick: table.getToggleAllRowsExpandedHandler(),
-              }}
-            >
-              {table.getIsAllRowsExpanded() ? '👇' : '👉'}
-            </button>{' '}
-            Name
-          </>
-        ),
+        header: () => 'Name',
         cell: ({ row, getValue }) => (
-          <div
-            style={{
-              paddingLeft: `${row.depth * 2}rem`,
-            }}
-          >
-            <div>
-              {row.getCanExpand() ? (
-                <button
-                  {...{
-                    onClick: async () => {
-                      if (!row.original.subRows) {
-                        const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
-                        console.log(data.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)));
-                        setData((prevData) => updateNode(prevData, row.original._id, { subRows }));
-                      }
-                      row.getToggleExpandedHandler()();
-                    },
-                    style: { cursor: 'pointer' },
-                  }}
-                >
-                  {row.getIsExpanded() ? '👇' : '👉'}
-                </button>
-              ) : (
-                '🔵'
-              )}{' '}
-              {getValue<string>()}{' '}
-              {/* {row.original.type === 'DIRECTORY' && (
+          <div style={{ paddingLeft: `${row.depth}rem` }}>
+            {row.getCanExpand() ? (
+              <>{row.getIsExpanded() ? <DirectoryIcon isActive={true} /> : <DirectoryIcon isActive={false} />}</>
+            ) : (
+              <FileIcon />
+            )}{' '}
+            {getValue<string>()}{' '}
+            {/* {row.original.type === 'DIRECTORY' && (
                 <button
                   onClick={async () => {
                     const dir = await FileSystemNodeService.addDirectory({
@@ -136,7 +105,6 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
               >
                 Delete
               </button> */}
-            </div>
           </div>
         ),
       },
@@ -145,15 +113,14 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
         size: 30,
         accessorFn: (row) => row.type,
         header: () => <div>Type</div>,
-        cell: ({ row, getValue }) => <div>{getValue<string>()}</div>,
+        cell: ({ getValue }) => <div>{getValue<string>()}</div>,
       },
       {
         id: '3',
         size: 30,
-        // maxSize: 150,
         accessorFn: (row) => row.parentId,
         header: () => <div>Parent ID</div>,
-        cell: ({ row, getValue }) => <div>{getValue<string>()}</div>,
+        cell: ({ getValue }) => <div>{getValue<string>()}</div>,
       },
     ],
     [],
@@ -176,14 +143,12 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
     getRowCanExpand: (row) => row.original.type === 'DIRECTORY',
     getSubRows: (row) => row.subRows,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     debugTable: true,
   });
 
   return (
-    <table className={styles.table}>
+    <table className={styles.table} cellSpacing={0}>
       <thead className={styles.header}>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
@@ -207,10 +172,25 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
       <tbody>
         {table.getRowModel().rows.map((row) => {
           return (
-            <tr key={row.id}>
+            <tr
+              className={styles.tableRow}
+              key={row.id}
+              onClick={async () => {
+                if (!row.original.subRows) {
+                  const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
+                  console.log(data.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)));
+                  setData((prevData) => {
+                    const updated = updateNode(prevData, row.original._id, { subRows });
+                    console.log(updated);
+                    return updated;
+                  });
+                }
+                row.getToggleExpandedHandler()();
+              }}
+            >
               {row.getVisibleCells().map((cell) => {
                 return (
-                  <td style={{ width: `calc(${cell.column.getSize()}%)` }} key={cell.id}>
+                  <td className={styles.cell} style={{ width: `calc(${cell.column.getSize()}%)` }} key={cell.id}>
                     <div>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
                   </td>
                 );
