@@ -77,7 +77,7 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
         accessorFn: (row) => row.name,
         header: () => 'Name',
         cell: ({ row, getValue }) => (
-          <div style={{ paddingLeft: `${row.depth}rem` }}>
+          <div style={{ paddingLeft: `${row.depth + 0.5}rem`, display: 'flex', alignItems: 'center', gap: '1em' }}>
             {row.getCanExpand() ? (
               <>{row.getIsExpanded() ? <DirectoryIcon isActive={true} /> : <DirectoryIcon isActive={false} />}</>
             ) : (
