@@ -75,15 +75,17 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
         id: '1',
         size: 40,
         accessorFn: (row) => row.name,
-        header: () => 'Name',
+        header: () => <span>Name</span>,
         cell: ({ row, getValue }) => (
           <div style={{ paddingLeft: `${row.depth + 0.5}rem`, display: 'flex', alignItems: 'center', gap: '1em' }}>
-            {row.getCanExpand() ? (
-              <>{row.getIsExpanded() ? <DirectoryIcon isActive={true} /> : <DirectoryIcon isActive={false} />}</>
-            ) : (
-              <FileIcon />
-            )}{' '}
-            {getValue<string>()}{' '}
+            <div>
+              {row.getCanExpand() ? (
+                <>{row.getIsExpanded() ? <DirectoryIcon isActive={true} /> : <DirectoryIcon isActive={false} />}</>
+              ) : (
+                <FileIcon />
+              )}
+            </div>
+            <span>{getValue<string>()}</span>
             {/* {row.original.type === 'DIRECTORY' && (
                 <button
                   onClick={async () => {
@@ -112,15 +114,15 @@ export const AllNodesTable = ({ firstLevelNodes }: AllNodeTableProps) => {
         id: '2',
         size: 30,
         accessorFn: (row) => row.type,
-        header: () => <div>Type</div>,
-        cell: ({ getValue }) => <div>{getValue<string>()}</div>,
+        header: () => <span>Type</span>,
+        cell: ({ getValue }) => <span>{getValue<string>()}</span>,
       },
       {
         id: '3',
         size: 30,
         accessorFn: (row) => row.parentId,
-        header: () => <div>Parent ID</div>,
-        cell: ({ getValue }) => <div>{getValue<string>()}</div>,
+        header: () => <span>Parent ID</span>,
+        cell: ({ getValue }) => <span>{getValue<string>()}</span>,
       },
     ],
     [],
