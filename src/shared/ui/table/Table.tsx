@@ -1,16 +1,17 @@
 import { flexRender, Row, Table as TanstackTable } from '@tanstack/react-table';
 import styles from './Table.module.scss';
-import { Fragment, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Cell } from './cell/Cell';
 import { TableRow } from './row/TableRow';
 
-interface TableRowFallbackProps {
+interface DefaultTableRowProps {
   row: Row<any>;
+  onClick?: React.MouseEventHandler<HTMLTableRowElement>;
 }
 
-export const TableRowFallback: React.FC<TableRowFallbackProps> = ({ row }) => {
+export const DefaultTableRow: React.FC<DefaultTableRowProps> = ({ row, onClick }) => {
   return (
-    <tr>
+    <tr onClick={onClick}>
       {row.getVisibleCells().map((cell) => (
         <Cell key={cell.id} cell={cell} />
       ))}
@@ -20,10 +21,10 @@ export const TableRowFallback: React.FC<TableRowFallbackProps> = ({ row }) => {
 
 interface TableProps {
   table: TanstackTable<any>;
-  customRow?: (row: Row<any>, children: ReactNode) => ReactNode;
+  renderCustomRow?: (row: Row<any>, children: ReactNode) => ReactNode;
 }
 
-export const Table: React.FC<TableProps> = ({ table, customRow }) => {
+export const Table: React.FC<TableProps> = ({ table, renderCustomRow }) => {
   return (
     <table className={styles['table-container']} cellSpacing={0}>
       <thead>
@@ -43,7 +44,7 @@ export const Table: React.FC<TableProps> = ({ table, customRow }) => {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id} row={row} customRow={customRow} />
+          <TableRow key={row.id} row={row} renderCustomRow={renderCustomRow} />
         ))}
       </tbody>
     </table>

@@ -41,34 +41,34 @@ interface AllNodeTableProps {
 //   return mutateNodes(oldData, id, deleteFn);
 // }
 
-// function updateNode(
-//   oldData: FileSystemNodeWithSubRows[],
-//   id: string,
-//   nodeUpdate: Partial<FileSystemNodeWithSubRows>,
-// ): FileSystemNodeWithSubRows[] {
-//   const updateFn = (rows: FileSystemNodeWithSubRows[]) =>
-//     rows.map((row) => (row._id === id ? { ...row, ...nodeUpdate } : row));
-//   return mutateNodes(oldData, id, updateFn);
-// }
+function updateNode(
+  oldData: FileSystemNodeWithSubRows[],
+  id: string,
+  nodeUpdate: Partial<FileSystemNodeWithSubRows>,
+): FileSystemNodeWithSubRows[] {
+  const updateFn = (rows: FileSystemNodeWithSubRows[]) =>
+    rows.map((row) => (row._id === id ? { ...row, ...nodeUpdate } : row));
+  return mutateNodes(oldData, id, updateFn);
+}
 
-// function mutateNodes(
-//   oldData: FileSystemNodeWithSubRows[],
-//   id: string,
-//   mutateFn: (
-//     rows: FileSystemNodeWithSubRows[],
-//     id: string,
-//     row: FileSystemNodeWithSubRows,
-//   ) => FileSystemNodeWithSubRows[],
-// ): FileSystemNodeWithSubRows[] {
-//   function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
-//     if (!oldData.length) return [];
-//     const searchingRow = rows.find((row) => row._id === id);
-//     if (searchingRow !== undefined) return mutateFn(rows, id, searchingRow);
-//     return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
-//   }
+function mutateNodes(
+  oldData: FileSystemNodeWithSubRows[],
+  id: string,
+  mutateFn: (
+    rows: FileSystemNodeWithSubRows[],
+    id: string,
+    row: FileSystemNodeWithSubRows,
+  ) => FileSystemNodeWithSubRows[],
+): FileSystemNodeWithSubRows[] {
+  function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
+    if (!oldData.length) return [];
+    const searchingRow = rows.find((row) => row._id === id);
+    if (searchingRow !== undefined) return mutateFn(rows, id, searchingRow);
+    return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
+  }
 
-//   return nodeUpdater(oldData);
-// }
+  return nodeUpdater(oldData);
+}
 
 export const AllNodesTable: React.FC<AllNodeTableProps> = ({ rootData }) => {
   // const columns = React.useMemo<ColumnDef<FileSystemNodeWithSubRows>[]>(
@@ -151,7 +151,30 @@ export const AllNodesTable: React.FC<AllNodeTableProps> = ({ rootData }) => {
   //   debugTable: true,
   // });
 
-  return <FileSystemNodeTable rootData={rootData} />;
+  return (
+    <FileSystemNodeTable
+      rootData={rootData}
+      renderCustomDirectoryRow={(row, children, setRows) => (
+        <tr
+          onClick={async () => {
+            if (!row.getCanExpand()) return;
+            if (!row.original.subRows) {
+              const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
+              // console.log(data.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)));
+              setRows((prevData) => {
+                const updated = updateNode(prevData, row.original._id, { subRows });
+                console.log(updated);
+                return updated;
+              });
+            }
+            row.getToggleExpandedHandler()();
+          }}
+        >
+          {children}
+        </tr>
+      )}
+    />
+  );
 
   // return (
   //   <table className={styles.table} cellSpacing={0}>

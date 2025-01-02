@@ -1,22 +1,22 @@
 import { Row } from '@tanstack/react-table';
 import { ReactNode } from 'react';
-import { TableRowFallback } from '../Table';
 import { Cell } from '../cell/Cell';
+import { DefaultTableRow } from '../Table';
 
 interface TableRowProps {
   row: Row<any>;
-  customRow?: (row: Row<any>, children: ReactNode) => ReactNode;
+  renderCustomRow?: (row: Row<any>, children: ReactNode) => ReactNode;
 }
 
-export const TableRow: React.FC<TableRowProps> = ({ row, customRow }) => {
-  if (!customRow) return <TableRowFallback row={row} />;
+export const TableRow: React.FC<TableRowProps> = ({ row, renderCustomRow }) => {
+  if (!renderCustomRow) return <DefaultTableRow row={row} />;
 
   return (
     <>
-      {customRow(
+      {renderCustomRow(
         row,
         row.getVisibleCells().map((cell) => <Cell key={cell.id} cell={cell} />),
-      ) || <TableRowFallback row={row} />}
+      ) ?? <DefaultTableRow row={row} />}
     </>
   );
 };

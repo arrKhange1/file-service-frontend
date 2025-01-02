@@ -54,14 +54,22 @@ function mutateNodes(
 
 interface FileSystemNodeTableProps {
   rootData: FileSystemNode[];
-  customDirectoryRow: ReactNode;
-  customFileRow: ReactNode;
+  renderCustomDirectoryRow?: (
+    row: Row<FileSystemNodeWithSubRows>,
+    children: ReactNode,
+    setRows: React.Dispatch<React.SetStateAction<FileSystemNodeWithSubRows[]>>,
+  ) => ReactNode;
+  renderCustomFileRow?: (
+    row: Row<FileSystemNodeWithSubRows>,
+    children: ReactNode,
+    setRows: React.Dispatch<React.SetStateAction<FileSystemNodeWithSubRows[]>>,
+  ) => ReactNode;
 }
 
 export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
   rootData,
-  customDirectoryRow,
-  customFileRow,
+  renderCustomDirectoryRow,
+  renderCustomFileRow,
 }) => {
   const columns = React.useMemo<ColumnDef<FileSystemNodeWithSubRows>[]>(
     () => [
@@ -140,25 +148,13 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
   return (
     <Table
       table={table}
-      customRow={(row: Row<FileSystemNodeWithSubRows>, children: ReactNode) => (
-        <tr
-          onClick={async () => {
-            if (!row.getCanExpand()) return;
-            if (!row.original.subRows) {
-              const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
-              console.log(data.map((row1) => (row1._id === row.original._id ? { ...row1, subRows } : row1)));
-              setData((prevData) => {
-                const updated = updateNode(prevData, row.original._id, { subRows });
-                console.log(updated);
-                return updated;
-              });
-            }
-            row.getToggleExpandedHandler()();
-          }}
-        >
-          {children}
-        </tr>
-      )}
+      renderCustomRow={(row: Row<FileSystemNodeWithSubRows>, children: ReactNode) =>
+        row.original.type === 'DIRECTORY' && renderCustomDirectoryRow
+          ? renderCustomDirectoryRow(row, children, setData)
+          : row.original.type === 'FILE' && renderCustomFileRow
+            ? renderCustomFileRow(row, children, setData)
+            : null
+      }
     />
   ); // HOC?
 };
