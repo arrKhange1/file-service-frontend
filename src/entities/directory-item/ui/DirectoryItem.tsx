@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { DirectoryIcon } from '../../shared/icons/DirectoryIcon';
 import styles from './DirectoryItem.module.scss';
+import { DirectoryIcon } from '../../../shared/icons/DirectoryIcon';
 
 interface DirectoryItemProps {
   isActive?: boolean;

@@ -15,8 +15,6 @@ export const PartitionPage = () => {
   });
 
   return (
-    <div className={styles.partitionPage}>
-      {!isLoading && <AllNodesTable firstLevelNodes={allFirstLevelNodes ?? []} />}
-    </div>
+    <div className={styles.partitionPage}>{!isLoading && <AllNodesTable rootData={allFirstLevelNodes ?? []} />}</div>
   );
 };

@@ -1,0 +1,51 @@
+.table-container table {
+  padding: 1em 1.5em 1.6em 1.5em;
+  background-color: var(--white);
+  border-radius: 1em;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-container tbody {
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.table-container thead {
+  margin-bottom: 0.5em;
+}
+
+.table-container tr {
+  display: table;
+  width: 100%;
+}
+
+.table-container tbody > tr:hover {
+  user-select: none;
+  cursor: pointer;
+  background-color: var(--isabeline-100);
+  border-radius: 10px;
+}
+
+.table-container td {
+  padding: 0.875em 0 0.875em 0;
+}
+
+.table-container th,
+.table-container td {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.table-container thead {
+  font-size: 0.875rem;
+  color: var(--black-raisin-54);
+}
+
+.table-container th {
+  text-align: left;
+}

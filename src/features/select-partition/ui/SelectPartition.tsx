@@ -1,8 +1,8 @@
 import { AccordionList } from '../../../shared/ui/accordion-list/AccordionList';
-import { DirectoryItem } from '../../../entities/ui/DirectoryItem';
 import { useQuery } from '@tanstack/react-query';
 import { FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
 import { useNavigate, useParams } from 'react-router';
+import { DirectoryItem } from '../../../entities/directory-item/ui/DirectoryItem';
 
 export interface SelectPartitionProps {
   headerText: string;
