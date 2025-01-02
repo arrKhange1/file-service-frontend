@@ -1,56 +1,9 @@
 import React, { ReactNode, useEffect } from 'react';
-import { FileSystemNode, FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
 import { ColumnDef, useReactTable, getCoreRowModel, getExpandedRowModel, Row } from '@tanstack/react-table';
 import { DirectoryIcon } from '../../../shared/icons/DirectoryIcon';
 import { FileIcon } from '../../../shared/icons/FileIcon';
 import { Table } from '../../../shared/ui/table/Table';
-import { FileSystemNodeWithSubRows } from '../model/file-system-node-subrows';
-
-function addNode(
-  oldData: FileSystemNodeWithSubRows[],
-  id: string,
-  nodeAdd: FileSystemNodeWithSubRows,
-): FileSystemNodeWithSubRows[] {
-  const addFn = (rows: FileSystemNodeWithSubRows[], id: string, row: FileSystemNodeWithSubRows) => {
-    const rowWithAddedNode: FileSystemNodeWithSubRows = { ...row, subRows: [...(row.subRows ?? []), nodeAdd] };
-    return rows.map((row) => (row._id === id ? rowWithAddedNode : row));
-  };
-  return mutateNodes(oldData, id, addFn);
-}
-
-function deleteNode(oldData: FileSystemNodeWithSubRows[], id: string): FileSystemNodeWithSubRows[] {
-  const deleteFn = (rows: FileSystemNodeWithSubRows[]) => rows.filter((row) => row._id !== id);
-  return mutateNodes(oldData, id, deleteFn);
-}
-
-function updateNode(
-  oldData: FileSystemNodeWithSubRows[],
-  id: string,
-  nodeUpdate: Partial<FileSystemNodeWithSubRows>,
-): FileSystemNodeWithSubRows[] {
-  const updateFn = (rows: FileSystemNodeWithSubRows[]) =>
-    rows.map((row) => (row._id === id ? { ...row, ...nodeUpdate } : row));
-  return mutateNodes(oldData, id, updateFn);
-}
-
-function mutateNodes(
-  oldData: FileSystemNodeWithSubRows[],
-  id: string,
-  mutateFn: (
-    rows: FileSystemNodeWithSubRows[],
-    id: string,
-    row: FileSystemNodeWithSubRows,
-  ) => FileSystemNodeWithSubRows[],
-): FileSystemNodeWithSubRows[] {
-  function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
-    if (!oldData.length) return [];
-    const searchingRow = rows.find((row) => row._id === id);
-    if (searchingRow !== undefined) return mutateFn(rows, id, searchingRow);
-    return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
-  }
-
-  return nodeUpdater(oldData);
-}
+import { FileSystemNode, FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes.model';
 
 interface FileSystemNodeTableProps {
   rootData: FileSystemNode[];
@@ -156,5 +109,5 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
             : null
       }
     />
-  ); // HOC?
+  );
 };
