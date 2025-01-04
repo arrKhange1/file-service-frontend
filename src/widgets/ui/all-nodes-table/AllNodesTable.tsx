@@ -10,7 +10,8 @@ export const AllNodesTable: React.FC<AllNodeTableProps> = ({ rootData }) => {
   return (
     <FileSystemNodeTable
       rootData={rootData}
-      renderCustomDirectoryRow={(row, children, setRows) => <tr onClick={() => expandRow(row, setRows)}>{children}</tr>}
+      allowSelection
+      onDirectoryRowClick={(row, setRows) => expandRow(row, setRows)}
     />
   );
 };

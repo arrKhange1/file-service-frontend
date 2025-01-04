@@ -1,30 +1,15 @@
 import { flexRender, Row, Table as TanstackTable } from '@tanstack/react-table';
 import styles from './Table.module.scss';
-import { ReactNode } from 'react';
-import { Cell } from './cell/Cell';
-import { TableRow } from './row/TableRow';
-
-interface DefaultTableRowProps {
-  row: Row<any>;
-  onClick?: React.MouseEventHandler<HTMLTableRowElement>;
-}
-
-export const DefaultTableRow: React.FC<DefaultTableRowProps> = ({ row, onClick }) => {
-  return (
-    <tr onClick={onClick}>
-      {row.getVisibleCells().map((cell) => (
-        <Cell key={cell.id} cell={cell} />
-      ))}
-    </tr>
-  );
-};
+import { TableBody } from './body/TableBody';
 
 interface TableProps {
   table: TanstackTable<any>;
-  renderCustomRow?: (row: Row<any>, children: ReactNode) => ReactNode;
+  onRowClick?: (row: Row<any>) => void;
+  onRowSelect?: (row: Row<any>) => void;
+  allowSelection: boolean;
 }
 
-export const Table: React.FC<TableProps> = ({ table, renderCustomRow }) => {
+export const Table: React.FC<TableProps> = ({ table, onRowClick, onRowSelect, allowSelection }) => {
   return (
     <table className={styles['table-container']} cellSpacing={0}>
       <thead>
@@ -43,9 +28,7 @@ export const Table: React.FC<TableProps> = ({ table, renderCustomRow }) => {
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id} row={row} renderCustomRow={renderCustomRow} />
-        ))}
+        <TableBody table={table} onRowClick={onRowClick} onRowSelect={onRowSelect} allowSelection={allowSelection} />
       </tbody>
     </table>
   );

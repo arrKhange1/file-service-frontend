@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ColumnDef, useReactTable, getCoreRowModel, getExpandedRowModel, Row } from '@tanstack/react-table';
 import { DirectoryIcon } from '../../../shared/icons/DirectoryIcon';
 import { FileIcon } from '../../../shared/icons/FileIcon';
@@ -7,22 +7,23 @@ import { FileSystemNode, FileSystemNodeWithSubRows } from '../../../shared/api/f
 
 interface FileSystemNodeTableProps {
   rootData: FileSystemNode[];
-  renderCustomDirectoryRow?: (
+  onDirectoryRowClick?: (
     row: Row<FileSystemNodeWithSubRows>,
-    children: ReactNode,
     setRows: React.Dispatch<React.SetStateAction<FileSystemNodeWithSubRows[]>>,
-  ) => ReactNode;
-  renderCustomFileRow?: (
-    row: Row<FileSystemNodeWithSubRows>,
-    children: ReactNode,
-    setRows: React.Dispatch<React.SetStateAction<FileSystemNodeWithSubRows[]>>,
-  ) => ReactNode;
+  ) => void;
+  onFileRowClick?: (row: Row<FileSystemNodeWithSubRows>) => void;
+  onDirectoryRowSelect?: (row: Row<FileSystemNodeWithSubRows>) => void;
+  onFileRowSelect?: (row: Row<FileSystemNodeWithSubRows>) => void;
+  allowSelection?: boolean;
 }
 
 export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
   rootData,
-  renderCustomDirectoryRow,
-  renderCustomFileRow,
+  onDirectoryRowClick,
+  onDirectoryRowSelect,
+  onFileRowClick,
+  onFileRowSelect,
+  allowSelection = false,
 }) => {
   const columns = React.useMemo<ColumnDef<FileSystemNodeWithSubRows>[]>(
     () => [
@@ -83,6 +84,16 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
     [],
   );
 
+  const onRowClick = useCallback((row: Row<FileSystemNodeWithSubRows>) => {
+    if (row.original.type === 'DIRECTORY' && onDirectoryRowClick) onDirectoryRowClick(row, setData);
+    if (row.original.type === 'FILE' && onFileRowClick) onFileRowClick(row);
+  }, []);
+
+  const onRowSelect = useCallback((row: Row<FileSystemNodeWithSubRows>) => {
+    if (row.original.type === 'DIRECTORY' && onDirectoryRowSelect) onDirectoryRowSelect(row);
+    if (row.original.type === 'FILE' && onFileRowSelect) onFileRowSelect(row);
+  }, []);
+
   const [data, setData] = React.useState<FileSystemNodeWithSubRows[]>(rootData);
   useEffect(() => {
     setData(rootData);
@@ -98,16 +109,5 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
     debugTable: true,
   });
 
-  return (
-    <Table
-      table={table}
-      renderCustomRow={(row: Row<FileSystemNodeWithSubRows>, children: ReactNode) =>
-        row.original.type === 'DIRECTORY' && renderCustomDirectoryRow
-          ? renderCustomDirectoryRow(row, children, setData)
-          : row.original.type === 'FILE' && renderCustomFileRow
-            ? renderCustomFileRow(row, children, setData)
-            : null
-      }
-    />
-  );
+  return <Table table={table} onRowClick={onRowClick} onRowSelect={onRowSelect} allowSelection={allowSelection} />;
 };
