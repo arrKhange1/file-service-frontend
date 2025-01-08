@@ -12,7 +12,6 @@ export async function expandRow(
     const subRows = await FileSystemNodeService.findNodesByParentId({ parentId: row.original._id });
     setRows((prevData) => {
       const updated = RowsMutationService.updateNode(prevData, row.original._id, { subRows });
-      console.log(updated);
       return updated;
     });
   }

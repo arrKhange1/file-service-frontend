@@ -6,11 +6,8 @@ import { Table } from '../../../shared/ui/table/Table';
 import { FileSystemNode, FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes.model';
 
 interface FileSystemNodeTableProps {
-  rootData: FileSystemNode[];
-  onDirectoryRowClick?: (
-    row: Row<FileSystemNodeWithSubRows>,
-    setRows: React.Dispatch<React.SetStateAction<FileSystemNodeWithSubRows[]>>,
-  ) => void;
+  data: FileSystemNodeWithSubRows[];
+  onDirectoryRowClick?: (row: Row<FileSystemNodeWithSubRows>) => void;
   onFileRowClick?: (row: Row<FileSystemNodeWithSubRows>) => void;
   onDirectoryRowSelect?: (row: Row<FileSystemNodeWithSubRows>) => void;
   onFileRowSelect?: (row: Row<FileSystemNodeWithSubRows>) => void;
@@ -18,7 +15,7 @@ interface FileSystemNodeTableProps {
 }
 
 export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
-  rootData,
+  data,
   onDirectoryRowClick,
   onDirectoryRowSelect,
   onFileRowClick,
@@ -85,7 +82,7 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
   );
 
   const onRowClick = useCallback((row: Row<FileSystemNodeWithSubRows>) => {
-    if (row.original.type === 'DIRECTORY' && onDirectoryRowClick) onDirectoryRowClick(row, setData);
+    if (row.original.type === 'DIRECTORY' && onDirectoryRowClick) onDirectoryRowClick(row);
     if (row.original.type === 'FILE' && onFileRowClick) onFileRowClick(row);
   }, []);
 
@@ -93,11 +90,6 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
     if (row.original.type === 'DIRECTORY' && onDirectoryRowSelect) onDirectoryRowSelect(row);
     if (row.original.type === 'FILE' && onFileRowSelect) onFileRowSelect(row);
   }, []);
-
-  const [data, setData] = React.useState<FileSystemNodeWithSubRows[]>(rootData);
-  useEffect(() => {
-    setData(rootData);
-  }, [rootData]);
 
   const table = useReactTable({
     data,
