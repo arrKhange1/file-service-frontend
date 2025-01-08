@@ -1,8 +1,8 @@
 import styles from './Modal.module.scss';
 
 interface ModalProps {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   visible: boolean;
   renderContent: (hide: () => void) => JSX.Element;
   onHide: () => void;

@@ -1,6 +1,8 @@
 import { FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes.model';
 import { Input } from '../../../shared/ui/input/Input';
 import { TabSwitcher } from '../../../shared/ui/tab-switcher/TabSwitcher';
+import { AddDirectoryForm } from './add-directory-form/AddDirectoryForm';
+import { AddFileForm } from './add-file-form/AddFileForm';
 import styles from './AddNodeForm.module.scss';
 
 interface AddNodeFormProps {
@@ -14,21 +16,11 @@ export const AddNodeForm: React.FC<AddNodeFormProps> = ({ data, onHide }) => {
       tabs={[
         {
           header: 'Directory',
-          content: (
-            <form className={styles.form} onSubmit={() => onHide()}>
-              <Input type="text" placeholder="Название директории..." />
-              <Input type="submit" value="Добавить" />
-            </form>
-          ),
+          content: <AddDirectoryForm onHide={onHide} />,
         },
         {
           header: 'File',
-          content: (
-            <form className={styles.form} onSubmit={() => onHide()}>
-              <Input type="text" placeholder="Название файла..." />
-              <Input type="submit" value="Добавить" />
-            </form>
-          ),
+          content: <AddFileForm onHide={onHide} />,
         },
       ]}
     />
