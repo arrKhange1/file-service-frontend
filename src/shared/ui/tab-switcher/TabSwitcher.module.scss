@@ -1,0 +1,28 @@
+.tabsSwitcher {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabsHeader {
+  display: flex;
+}
+
+.tabs {
+  padding: 1em 0.5em;
+  flex: 1;
+}
+
+.tab {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5em 0em;
+  flex: 1;
+  font-size: 1.1rem;
+}
+
+.tabSelected {
+  border-bottom: 1px solid var(--blue-ultramarine-100);
+  color: var(--blue-ultramarine-100);
+}
