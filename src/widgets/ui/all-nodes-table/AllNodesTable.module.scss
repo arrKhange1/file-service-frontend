@@ -1,0 +1,16 @@
+.tableHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tableTitle {
+  font-family: var(--jost-medium-500);
+  font-size: 1.5rem;
+}
+
+.tableFeatures {
+  display: flex;
+  gap: 0.5em;
+}

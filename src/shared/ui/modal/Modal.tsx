@@ -4,11 +4,12 @@ interface ModalProps {
   width?: number;
   height?: number;
   visible: boolean;
+  header?: string;
   renderContent: (hide: () => void) => JSX.Element;
   onHide: () => void;
 }
 
-export const Modal: React.FC<ModalProps> = ({ visible, renderContent, onHide, width, height }) => {
+export const Modal: React.FC<ModalProps> = ({ header, visible, renderContent, onHide, width, height }) => {
   function hide(): void {
     onHide();
   }
@@ -17,6 +18,7 @@ export const Modal: React.FC<ModalProps> = ({ visible, renderContent, onHide, wi
     visible && (
       <div className={styles.backdrop}>
         <div className={styles.modal} style={{ width: width ?? 300, height: height ?? 400 }}>
+          <span className={styles.modalHeader}>{header}</span>
           {renderContent(hide)}
         </div>
       </div>
