@@ -19,7 +19,7 @@ export const AllNodesTable: React.FC<AllNodeTableProps> = ({ rootData }) => {
 
   return (
     <>
-      <AllNodesContext.Provider value={{ data, onDataChange: (updatedData) => setData(updatedData), selectedNode }}>
+      <AllNodesContext.Provider value={{ data, onDataChange: setData, selectedNode }}>
         <Header />
       </AllNodesContext.Provider>
       <FileSystemNodeTable

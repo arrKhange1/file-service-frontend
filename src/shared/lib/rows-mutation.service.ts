@@ -9,10 +9,12 @@ export class RowsMutationService {
       id: string,
       row: FileSystemNodeWithSubRows,
     ) => FileSystemNodeWithSubRows[],
+    searchingFn?: (row: FileSystemNodeWithSubRows) => boolean,
   ): FileSystemNodeWithSubRows[] {
     function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
       if (!oldData.length) return [];
-      const searchingRow = rows.find((row) => row._id === id);
+      const searchingRow = rows.find((row) => (searchingFn ? searchingFn(row) : row._id === id));
+      console.log('found row', searchingRow);
       if (searchingRow !== undefined) return mutateFn(rows, id, searchingRow);
       return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
     }
@@ -25,10 +27,15 @@ export class RowsMutationService {
     nodeAdd: FileSystemNodeWithSubRows,
   ): FileSystemNodeWithSubRows[] {
     const addFn = (rows: FileSystemNodeWithSubRows[], id: string, row: FileSystemNodeWithSubRows) => {
-      const rowWithAddedNode: FileSystemNodeWithSubRows = { ...row, subRows: [...(row.subRows ?? []), nodeAdd] };
-      return rows.map((row) => (row._id === id ? rowWithAddedNode : row));
+      if (row._id === id) {
+        const rowWithAddedNode: FileSystemNodeWithSubRows = { ...row, subRows: [...(row.subRows ?? []), nodeAdd] };
+        return rows.map((row) => (row._id === id ? rowWithAddedNode : row));
+      }
+      console.log([...rows, nodeAdd]);
+      return [...rows, nodeAdd];
     };
-    return RowsMutationService.mutateNodes(oldData, id, addFn);
+    if (!oldData.length) return [nodeAdd];
+    return RowsMutationService.mutateNodes(oldData, id, addFn, (row) => row._id === id || row.parentId === id);
   }
 
   static deleteNode(oldData: FileSystemNodeWithSubRows[], id: string): FileSystemNodeWithSubRows[] {
