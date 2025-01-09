@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { ColumnDef, useReactTable, getCoreRowModel, getExpandedRowModel, Row } from '@tanstack/react-table';
 import { DirectoryIcon } from '../../../shared/icons/DirectoryIcon';
 import { FileIcon } from '../../../shared/icons/FileIcon';
 import { Table } from '../../../shared/ui/table/Table';
-import { FileSystemNode, FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes.model';
+import { FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes.model';
 
 interface FileSystemNodeTableProps {
   data: FileSystemNodeWithSubRows[];

@@ -3,6 +3,12 @@ import { FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes
 
 interface IAllNodesContext {
   data: FileSystemNodeWithSubRows[];
+  onDataChange: (data: FileSystemNodeWithSubRows[]) => void;
+  selectedNode: FileSystemNodeWithSubRows | null;
 }
 
-export const AllNodesContext = createContext<IAllNodesContext>({ data: [] });
+export const AllNodesContext = createContext<IAllNodesContext>({
+  data: [],
+  onDataChange: () => {},
+  selectedNode: null,
+});

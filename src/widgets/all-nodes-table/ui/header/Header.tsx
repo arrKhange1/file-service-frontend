@@ -1,15 +1,13 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { AddNodeForm } from '../../../../features/add-node-form/ui/AddNodeForm';
 import { Input } from '../../../../shared/ui/input/Input';
 import { Modal } from '../../../../shared/ui/modal/Modal';
 import styles from './Header.module.scss';
-import { AllNodesContext } from '../../store/all-nodes-context';
 
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
   const [visible, setVisible] = useState(false);
-  const ctx = useContext(AllNodesContext);
   return (
     <>
       <section className={styles.tableHeader}>
@@ -20,7 +18,7 @@ export const Header: React.FC<HeaderProps> = () => {
       </section>
       <Modal
         visible={visible}
-        renderContent={(hide) => <AddNodeForm data={ctx.data} onHide={hide} />}
+        renderContent={(hide) => <AddNodeForm onHide={hide} />}
         onHide={() => setVisible(false)}
       />
     </>

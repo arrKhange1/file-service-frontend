@@ -11,16 +11,23 @@ interface AllNodeTableProps {
 
 export const AllNodesTable: React.FC<AllNodeTableProps> = ({ rootData }) => {
   const [data, setData] = useState<FileSystemNodeWithSubRows[]>(rootData);
+  const [selectedNode, setSelectedNode] = useState<FileSystemNodeWithSubRows | null>(null);
   useEffect(() => {
+    // TODO: убрать
     setData(rootData);
   }, [rootData]);
 
   return (
     <>
-      <AllNodesContext.Provider value={{ data }}>
+      <AllNodesContext.Provider value={{ data, onDataChange: (updatedData) => setData(updatedData), selectedNode }}>
         <Header />
       </AllNodesContext.Provider>
-      <FileSystemNodeTable data={data} allowSelection onDirectoryRowClick={(row) => expandRow(row, setData)} />
+      <FileSystemNodeTable
+        data={data}
+        allowSelection
+        onDirectoryRowClick={(row) => expandRow(row, setData)}
+        onDirectoryRowSelect={(row) => setSelectedNode(row.original)}
+      />
     </>
   );
 };
