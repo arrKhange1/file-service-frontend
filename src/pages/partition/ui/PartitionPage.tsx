@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
-import { AllNodesTable } from '../../../widgets/ui/all-nodes-table/AllNodesTable';
+import { AllNodesTable } from '../../../widgets/all-nodes-table/ui/AllNodesTable';
 import styles from './PartitionPage.module.scss';
 import { useQuery } from '@tanstack/react-query';
 
