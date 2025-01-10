@@ -1,4 +1,4 @@
-import { Input } from '../../../../shared/ui/input/Input';
+import { Input } from '../../../../shared/ui/input/Input/Input';
 import styles from '../AddNodeForm.module.scss';
 
 interface AddFileFormProps {

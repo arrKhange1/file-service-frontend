@@ -1,0 +1,11 @@
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.fieldError {
+  font-size: 0.875rem;
+  font-family: var(--ibm-plex-sans-medium-500);
+  color: var(--error);
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AddNodeForm } from '../../../../features/add-node-form/ui/AddNodeForm';
-import { Input } from '../../../../shared/ui/input/Input';
+import { Input } from '../../../../shared/ui/input/Input/Input';
 import { Modal } from '../../../../shared/ui/modal/Modal';
 import styles from './Header.module.scss';
 
