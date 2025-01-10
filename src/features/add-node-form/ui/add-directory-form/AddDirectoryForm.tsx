@@ -21,7 +21,6 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
   const params = useParams<PartitionParams>();
   const ctx = React.useContext(AllNodesContext);
   const {
-    control,
     handleSubmit,
     register,
     formState: { errors },
@@ -51,13 +50,13 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <FieldWrapper title="Name" errorMessage={errors.name?.message}>
         <Input
-          {...register('name', { required: { value: true, message: 'Name is required' } })}
+          {...register('name', { validate: (name) => !!name.trim() || 'Name is mandatory' })}
           type="text"
           placeholder="Название директории..."
         />
       </FieldWrapper>
 
-      <Input className={styles.submitBtn} type="submit" value="Добавить" />
+      <Input className={styles.submitBtn} type="submit" value="Добавить" disabled={!!errors.name} />
     </form>
   );
 };
