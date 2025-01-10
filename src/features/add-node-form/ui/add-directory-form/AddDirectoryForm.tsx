@@ -50,24 +50,12 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <FieldWrapper title="Name" errorMessage={errors.name?.message}>
-        <Controller
-          name="name"
-          control={control}
-          rules={{
-            required: { value: true, message: 'Name is required' },
-          }}
-          render={({ field }) => <Input {...field} type="text" placeholder="Название директории..." />}
+        <Input
+          {...register('name', { required: { value: true, message: 'Name is required' } })}
+          type="text"
+          placeholder="Название директории..."
         />
       </FieldWrapper>
-      {/* <Input
-        type="text"
-        placeholder="Название директории..."
-        {...register('name', {
-          required: { value: true, message: 'Name is required' },
-          minLength: { value: 10, message: 'Min length is 10' },
-        })}
-      />
-      {errors.name && <p>{errors.name.message}</p>} */}
 
       <Input className={styles.submitBtn} type="submit" value="Добавить" />
     </form>
