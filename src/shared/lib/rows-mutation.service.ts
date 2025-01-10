@@ -14,7 +14,6 @@ export class RowsMutationService {
     function nodeUpdater(rows: FileSystemNodeWithSubRows[]): FileSystemNodeWithSubRows[] {
       if (!oldData.length) return [];
       const searchingRow = rows.find((row) => (searchingFn ? searchingFn(row) : row._id === id));
-      console.log('found row', searchingRow);
       if (searchingRow !== undefined) return mutateFn(rows, id, searchingRow);
       return rows.map((row) => (row.subRows ? { ...row, subRows: nodeUpdater(row.subRows) } : row));
     }
@@ -31,7 +30,6 @@ export class RowsMutationService {
         const rowWithAddedNode: FileSystemNodeWithSubRows = { ...row, subRows: [...(row.subRows ?? []), nodeAdd] };
         return rows.map((row) => (row._id === id ? rowWithAddedNode : row));
       }
-      console.log([...rows, nodeAdd]);
       return [...rows, nodeAdd];
     };
     if (!oldData.length) return [nodeAdd];
