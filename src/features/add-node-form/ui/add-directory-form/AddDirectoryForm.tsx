@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../../../../shared/ui/input/Input/Input';
 import { AllNodesContext } from '../../../../widgets/all-nodes-table/store/all-nodes-context';
 import styles from '../AddNodeForm.module.scss';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { DirectoryNode } from '../../../../shared/api/fs-nodes/fs-nodes.model';
 import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
 import { RowsMutationService } from '../../../../shared/lib/rows-mutation.service';
@@ -23,7 +23,7 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<DirectoryForm>({
     defaultValues: {
       name: '',
@@ -40,7 +40,6 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
       parentId,
     });
     const updatedData = RowsMutationService.addNode(ctx.data, parentId, dir);
-    console.log(updatedData, parentId, ctx.selectedNode?._id);
 
     ctx.onDataChange(updatedData);
     onHide();
@@ -56,7 +55,7 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
         />
       </FieldWrapper>
 
-      <Input className={styles.submitBtn} type="submit" value="Добавить" disabled={!!errors.name} />
+      <Input className={styles.submitBtn} type="submit" value="Добавить" disabled={!isValid} />
     </form>
   );
 };
