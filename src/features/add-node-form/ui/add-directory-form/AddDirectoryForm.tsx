@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Input } from '../../../../shared/ui/input/Input/Input';
 import { AllNodesContext } from '../../../../widgets/all-nodes-table/store/all-nodes-context';
 import styles from '../AddNodeForm.module.scss';
@@ -19,7 +19,7 @@ interface AddDirectoryFormProps {
 
 export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) => {
   const params = useParams<PartitionParams>();
-  const ctx = React.useContext(AllNodesContext);
+  const ctx = useContext(AllNodesContext);
   const {
     handleSubmit,
     register,

@@ -14,6 +14,12 @@ export interface AddDirectory {
   parentId: string;
 }
 
+export interface AddFile {
+  name: string;
+  description?: string;
+  parentId: string;
+}
+
 enum FileSystemNodeQueryKey {
   FS_NODES = 'fs-nodes',
 }
@@ -37,6 +43,11 @@ export class FileSystemNodeService {
 
   static async addDirectory(dirToAdd: AddDirectory): Promise<DirectoryNode> {
     const response = await api.post(`${FileSystemNodeService.fsNodesUrl}/directory`, dirToAdd);
+    return response.data as DirectoryNode;
+  }
+
+  static async addFile(fileToAdd: AddFile): Promise<DirectoryNode> {
+    const response = await api.post(`${FileSystemNodeService.fsNodesUrl}/file`, fileToAdd);
     return response.data as DirectoryNode;
   }
 }

@@ -3,6 +3,13 @@ import { FileNode } from '../../../../shared/api/fs-nodes/fs-nodes.model';
 import { Input } from '../../../../shared/ui/input/Input/Input';
 import styles from '../AddNodeForm.module.scss';
 import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrapper';
+import { useContext } from 'react';
+import { AllNodesContext } from '../../../../widgets/all-nodes-table/store/all-nodes-context';
+import { useParams } from 'react-router';
+import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
+import { RowsMutationService } from '../../../../shared/lib/rows-mutation.service';
+
+type PartitionParams = 'partitionId';
 
 type FileForm = Pick<FileNode, 'name' | 'description'>;
 
@@ -11,6 +18,8 @@ interface AddFileFormProps {
 }
 
 export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
+  const params = useParams<PartitionParams>();
+  const ctx = useContext(AllNodesContext);
   const {
     handleSubmit,
     register,
@@ -22,8 +31,24 @@ export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
     },
     mode: 'onChange',
   });
+
+  async function onSubmit(fileForm: FileForm) {
+    const parentId = ctx.selectedNode?._id ?? params.partitionId;
+    if (!parentId) throw new Error('parentId должен присутствовать (хотя бы в роуте)');
+
+    const file = await FileSystemNodeService.addFile({
+      name: fileForm.name,
+      description: fileForm.description,
+      parentId,
+    });
+    const updatedData = RowsMutationService.addNode(ctx.data, parentId, file);
+
+    ctx.onDataChange(updatedData);
+    onHide();
+  }
+
   return (
-    <form className={styles.form} onSubmit={() => onHide()}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <FieldWrapper title="Name" errorMessage={errors.name?.message}>
         <Input
           {...register('name', { validate: (name) => !!name.trim() || 'Name is mandatory' })}
