@@ -27,6 +27,7 @@ export const AllNodesTable: React.FC<AllNodeTableProps> = () => {
         allowSelection
         onDirectoryRowClick={(row) => onDirectoryRowClick(row)}
         onDirectoryRowSelect={(row) => dispatch({ type: 'setSelectedNode', payload: { selectedNode: row.original } })}
+        onFileRowSelect={(row) => dispatch({ type: 'setSelectedNode', payload: { selectedNode: row.original } })}
       />
     </>
   );

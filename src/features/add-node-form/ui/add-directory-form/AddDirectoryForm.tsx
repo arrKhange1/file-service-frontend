@@ -1,7 +1,6 @@
 import { Input } from '../../../../shared/ui/input/Input/Input';
 import styles from '../AddNodeForm.module.scss';
 import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrapper';
-import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
 import { useDirectoryForm } from '../../model/useDirectoryForm';
 import { FormProvider } from 'react-hook-form';
 import { AddNodeFormFooter } from '../AddNodeFormFooter/AddNodeFormFooter';
