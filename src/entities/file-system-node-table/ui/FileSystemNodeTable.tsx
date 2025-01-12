@@ -4,9 +4,9 @@ import { DirectoryIcon } from '../../../shared/icons/DirectoryIcon';
 import { FileIcon } from '../../../shared/icons/FileIcon';
 import { Table } from '../../../shared/ui/table/Table';
 import { FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes.model';
+import { useFileSystemNodes } from '../model/file-system-nodes-context';
 
 interface FileSystemNodeTableProps {
-  data: FileSystemNodeWithSubRows[];
   onDirectoryRowClick?: (row: Row<FileSystemNodeWithSubRows>) => void;
   onFileRowClick?: (row: Row<FileSystemNodeWithSubRows>) => void;
   onDirectoryRowSelect?: (row: Row<FileSystemNodeWithSubRows>) => void;
@@ -15,7 +15,6 @@ interface FileSystemNodeTableProps {
 }
 
 export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
-  data,
   onDirectoryRowClick,
   onDirectoryRowSelect,
   onFileRowClick,
@@ -39,27 +38,6 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
               )}
             </div>
             <span>{getValue<string>()}</span>
-            {/* {row.original.type === 'DIRECTORY' && (
-                    <button
-                      onClick={async () => {
-                        const dir = await FileSystemNodeService.addDirectory({
-                          name: 'New Dir',
-                          parentId: row.original._id,
-                        });
-                        setData((prevData) => addNode(prevData, row.original._id, dir));
-                      }}
-                    >
-                      Add Dir
-                    </button>
-                  )}
-                  <button
-                    onClick={async () => {
-                      const status = await FileSystemNodeService.deleteNodeById({ id: row.original._id });
-                      if (200 === status) setData((prevData) => deleteNode(prevData, row.original._id));
-                    }}
-                  >
-                    Delete
-                  </button> */}
           </div>
         ),
       },
@@ -91,6 +69,9 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
     if (row.original.type === 'FILE' && onFileRowSelect) onFileRowSelect(row);
   }, []);
 
+  const {
+    state: { data },
+  } = useFileSystemNodes();
   const table = useReactTable({
     data,
     columns,
