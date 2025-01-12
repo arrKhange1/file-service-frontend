@@ -11,7 +11,10 @@ interface AddDirectoryFormProps {
 }
 
 export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) => {
-  const { onSubmit, handleSubmit, register, errors, form } = useDirectoryForm({ name: '' }, onHide);
+  const { onSubmit, handleSubmit, register, errors, form } = useDirectoryForm({
+    defaultValues: { name: '' },
+    onSubmitSuccess: onHide,
+  });
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

@@ -7,7 +7,12 @@ import { FileNode } from '../../../shared/api/fs-nodes/fs-nodes.model';
 type PartitionParams = 'partitionId';
 type FileForm = Pick<FileNode, 'name' | 'description'>;
 
-export function useFileForm(defaultValues: FileForm, onSubmitSuccess: () => void) {
+type FileFormArgs = {
+  defaultValues: FileForm;
+  onSubmitSuccess: () => void;
+};
+
+export function useFileForm({ defaultValues, onSubmitSuccess }: FileFormArgs) {
   const params = useParams<PartitionParams>();
   const {
     state: { selectedNode },

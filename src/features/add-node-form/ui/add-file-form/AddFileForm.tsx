@@ -10,7 +10,10 @@ interface AddFileFormProps {
 }
 
 export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
-  const { handleSubmit, register, errors, form, onSubmit } = useFileForm({ name: '', description: '' }, onHide);
+  const { handleSubmit, register, errors, form, onSubmit } = useFileForm({
+    defaultValues: { name: '', description: '' },
+    onSubmitSuccess: onHide,
+  });
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

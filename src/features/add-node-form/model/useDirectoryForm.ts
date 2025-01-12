@@ -7,7 +7,12 @@ import { DirectoryNode } from '../../../shared/api/fs-nodes/fs-nodes.model';
 type PartitionParams = 'partitionId';
 type DirectoryForm = Pick<DirectoryNode, 'name'>;
 
-export function useDirectoryForm(defaultValues: DirectoryForm, onSubmitSuccess: () => void) {
+type DirectoryFormArgs = {
+  defaultValues: DirectoryForm;
+  onSubmitSuccess: () => void;
+};
+
+export function useDirectoryForm({ defaultValues, onSubmitSuccess }: DirectoryFormArgs) {
   const params = useParams<PartitionParams>();
   const {
     state: { selectedNode },
