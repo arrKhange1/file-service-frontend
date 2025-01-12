@@ -13,14 +13,16 @@ export function useFileForm(defaultValues: FileForm, onSubmitSuccess: () => void
     state: { selectedNode },
     dispatch,
   } = useFileSystemNodes();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isValid },
-  } = useForm<FileForm>({
+  const form = useForm<FileForm>({
     defaultValues,
     mode: 'onChange',
   });
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = form;
 
   async function onSubmit(fileForm: FileForm) {
     const parentId = selectedNode?._id ?? params.partitionId;
@@ -36,5 +38,5 @@ export function useFileForm(defaultValues: FileForm, onSubmitSuccess: () => void
     onSubmitSuccess();
   }
 
-  return { onSubmit, handleSubmit, register, errors, isValid };
+  return { onSubmit, handleSubmit, register, errors, form };
 }

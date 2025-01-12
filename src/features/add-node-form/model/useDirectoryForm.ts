@@ -13,14 +13,15 @@ export function useDirectoryForm(defaultValues: DirectoryForm, onSubmitSuccess: 
     state: { selectedNode },
     dispatch,
   } = useFileSystemNodes();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isValid },
-  } = useForm<DirectoryForm>({
+  const form = useForm<DirectoryForm>({
     defaultValues,
     mode: 'onChange',
   });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = form;
 
   async function onSubmit(directoryForm: DirectoryForm) {
     const parentId = selectedNode?._id ?? params.partitionId;
@@ -35,5 +36,5 @@ export function useDirectoryForm(defaultValues: DirectoryForm, onSubmitSuccess: 
     onSubmitSuccess();
   }
 
-  return { onSubmit, handleSubmit, register, errors, isValid };
+  return { onSubmit, handleSubmit, register, errors, form };
 }
