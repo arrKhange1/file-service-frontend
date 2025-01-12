@@ -3,11 +3,9 @@ import { FileNode } from '../../../../shared/api/fs-nodes/fs-nodes.model';
 import { Input } from '../../../../shared/ui/input/Input/Input';
 import styles from '../AddNodeForm.module.scss';
 import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrapper';
-import { useContext } from 'react';
-import { AllNodesContext } from '../../../../widgets/all-nodes-table/store/all-nodes-context';
 import { useParams } from 'react-router';
 import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
-import { RowsMutationService } from '../../../../shared/lib/rows-mutation.service';
+import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
 
 type PartitionParams = 'partitionId';
 
@@ -19,7 +17,7 @@ interface AddFileFormProps {
 
 export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
   const params = useParams<PartitionParams>();
-  const ctx = useContext(AllNodesContext);
+  const { state, dispatch } = useFileSystemNodes();
   const {
     handleSubmit,
     register,
@@ -33,7 +31,7 @@ export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
   });
 
   async function onSubmit(fileForm: FileForm) {
-    const parentId = ctx.selectedNode?._id ?? params.partitionId;
+    const parentId = state.selectedNode?._id ?? params.partitionId;
     if (!parentId) throw new Error('parentId должен присутствовать (хотя бы в роуте)');
 
     const file = await FileSystemNodeService.addFile({
@@ -41,9 +39,8 @@ export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
       description: fileForm.description,
       parentId,
     });
-    const updatedData = RowsMutationService.addNode(ctx.data, parentId, file);
 
-    ctx.onDataChange(updatedData);
+    dispatch({ type: 'addNode', payload: { id: parentId, nodeToAdd: file } });
     onHide();
   }
 

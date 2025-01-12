@@ -4,13 +4,17 @@ import { FileSystemNodeWithSubRows } from '../../../shared/api/fs-nodes/fs-nodes
 type AddNodePayload = { id: string; nodeToAdd: FileSystemNodeWithSubRows };
 type DeleteNodePayload = { id: string };
 type PatchNodePayload = { id: string; nodePatch: Partial<FileSystemNodeWithSubRows> };
+type SetRootNodesPayload = { rootNodes: FileSystemNodeWithSubRows[] };
+type SetSelectedNodePayload = { selectedNode: FileSystemNodeWithSubRows | null };
 type Action =
   | { type: 'addNode'; payload: AddNodePayload }
   | { type: 'deleteNode'; payload: DeleteNodePayload }
-  | { type: 'patchNode'; payload: PatchNodePayload };
+  | { type: 'patchNode'; payload: PatchNodePayload }
+  | { type: 'setRootNodes'; payload: SetRootNodesPayload }
+  | { type: 'setSelectedNode'; payload: SetSelectedNodePayload };
 type Dispatch = (action: Action) => void;
 type State = { data: FileSystemNodeWithSubRows[]; selectedNode: FileSystemNodeWithSubRows | null };
-type FileSystemNodesProviderProps = { defaultState?: State; children: React.ReactNode };
+type FileSystemNodesProviderProps = { rootNodes: FileSystemNodeWithSubRows[]; children: React.ReactNode };
 
 const FileSystemNodesContext = React.createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined);
 
@@ -63,12 +67,25 @@ function fileSystemNodesReducer(state: State, action: Action): State {
       const updatedData = nodeUpdater(state.data, action.payload.id, action.payload.nodePatch);
       return { ...state, data: updatedData };
     }
+    case 'setRootNodes': {
+      return { ...state, data: action.payload.rootNodes };
+    }
+    case 'setSelectedNode': {
+      return { ...state, selectedNode: action.payload.selectedNode };
+    }
   }
 }
 
-const FileSystemNodesProvider: React.FC<FileSystemNodesProviderProps> = ({ defaultState, children }) => {
-  const [state, dispatch] = React.useReducer(fileSystemNodesReducer, defaultState ?? { data: [], selectedNode: null });
+const FileSystemNodesProvider: React.FC<FileSystemNodesProviderProps> = ({ rootNodes, children }) => {
+  const [state, dispatch] = React.useReducer(fileSystemNodesReducer, { data: rootNodes, selectedNode: null });
   const value = { state, dispatch };
+
+  const [previousRootNodes, setPreviousRootNodes] = React.useState(rootNodes);
+  if (previousRootNodes !== rootNodes) {
+    setPreviousRootNodes(rootNodes);
+    dispatch({ type: 'setRootNodes', payload: { rootNodes } });
+  }
+
   return <FileSystemNodesContext.Provider value={value}>{children}</FileSystemNodesContext.Provider>;
 };
 
