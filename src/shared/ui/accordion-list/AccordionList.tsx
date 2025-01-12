@@ -12,10 +12,9 @@ export const AccordionList = ({ children, headerText }: PropsWithChildren<Accord
     <Accordion
       expandIcon={<CollapseExpandIcon type={'expand'} />}
       collapseIcon={<CollapseExpandIcon type={'collapse'} />}
+      className={styles.list}
     >
-      <AccordionTab className={styles.list} header={<div className={styles.listHeader}>{headerText}</div>}>
-        {children}
-      </AccordionTab>
+      <AccordionTab header={<div className={styles.listHeader}>{headerText}</div>}>{children}</AccordionTab>
     </Accordion>
   );
 };

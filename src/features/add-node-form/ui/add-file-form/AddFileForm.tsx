@@ -6,6 +6,7 @@ import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrap
 import { useParams } from 'react-router';
 import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
 import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
+import { DirectoryItem } from '../../../../entities/directory-item/ui/DirectoryItem';
 
 type PartitionParams = 'partitionId';
 
@@ -61,7 +62,13 @@ export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
         />
       </FieldWrapper>
 
-      <Input className={styles.submitBtn} type="submit" value="Добавить" disabled={!isValid} />
+      <section className={styles.formFooter}>
+        <section className={styles.currentDir}>
+          <span>Current directory:</span>
+          <DirectoryItem name={state.selectedNode ? state.selectedNode.name : 'root level'} />
+        </section>
+        <Input className={styles.submitBtn} type="submit" value="Добавить" disabled={!isValid} />
+      </section>
     </form>
   );
 };

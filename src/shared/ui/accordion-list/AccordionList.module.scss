@@ -5,6 +5,9 @@
 }
 
 .list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
   max-height: 200px;
   overflow: auto;
 }
