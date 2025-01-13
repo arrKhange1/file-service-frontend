@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { DirectoryItem } from '../../../../entities/directory-item/ui/DirectoryItem';
 import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
 import { Input } from '../../../../shared/ui/input/Input/Input';
-import styles from '../AddNodeForm.module.scss';
+import styles from '../AddNode.module.scss';
 
 export const AddNodeFormFooter = () => {
   const {

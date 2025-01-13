@@ -1,5 +1,5 @@
 import { Input } from '../../../../shared/ui/input/Input/Input';
-import styles from '../AddNodeForm.module.scss';
+import styles from '../AddNode.module.scss';
 import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrapper';
 import { useFileForm } from '../../model/useFileForm';
 import { FormProvider } from 'react-hook-form';
