@@ -1,40 +1,33 @@
-import { Input } from '../../../../shared/ui/input/Input/Input';
-import styles from '../AddNode.module.scss';
-import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrapper';
-import { useFileForm } from '../../model/useFileForm';
-import { FormProvider } from 'react-hook-form';
-import { AddNodeFormFooter } from '../AddNodeFormFooter/AddNodeFormFooter';
+import { FileForm } from '../../../../entities/file-form/FileForm';
+import { CurrentNode } from '../current-node/CurrentNode';
+import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
+import { useParams } from 'react-router';
+import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
 
 interface AddFileFormProps {
   onHide: () => void;
 }
 
 export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
-  const { handleSubmit, register, errors, form, onSubmit } = useFileForm({
-    defaultValues: { name: '', description: '' },
-    onSubmitSuccess: onHide,
-  });
+  const params = useParams();
+  const {
+    state: { selectedNode },
+    dispatch,
+  } = useFileSystemNodes();
 
-  return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <FieldWrapper title="Name" errorMessage={errors.name?.message}>
-        <Input
-          {...register('name', { validate: (name) => !!name.trim() || 'Name is mandatory' })}
-          type="text"
-          placeholder="Название файла..."
-        />
-      </FieldWrapper>
-      <FieldWrapper title="Description" errorMessage={errors.description?.message}>
-        <Input
-          {...register('description', { maxLength: { value: 50, message: 'Max length is 50 letters' } })}
-          type="text"
-          placeholder="Описание файла..."
-        />
-      </FieldWrapper>
+  async function onSubmit(fileForm: FileForm) {
+    const parentId = selectedNode?._id ?? params.partitionId;
+    if (!parentId) throw new Error('parentId должен присутствовать (хотя бы в роуте)');
 
-      <FormProvider {...form}>
-        <AddNodeFormFooter />
-      </FormProvider>
-    </form>
-  );
+    const file = await FileSystemNodeService.addFile({
+      name: fileForm.name,
+      description: fileForm.description,
+      parentId,
+    });
+
+    dispatch({ type: 'addNode', payload: { id: parentId, nodeToAdd: file } });
+    onHide();
+  }
+
+  return <FileForm onSubmit={onSubmit} currentDir={<CurrentNode />} actionName="Добавить" />;
 };

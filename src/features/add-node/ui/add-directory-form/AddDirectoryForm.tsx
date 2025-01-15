@@ -1,33 +1,31 @@
-import { Input } from '../../../../shared/ui/input/Input/Input';
-import styles from '../AddNode.module.scss';
-import { FieldWrapper } from '../../../../shared/ui/input/FieldWrapper/FieldWrapper';
-import { useDirectoryForm } from '../../model/useDirectoryForm';
-import { FormProvider } from 'react-hook-form';
-import { AddNodeFormFooter } from '../AddNodeFormFooter/AddNodeFormFooter';
+import { DirectoryForm } from '../../../../entities/directory-form/DirectoryForm';
+import { CurrentNode } from '../current-node/CurrentNode';
+import { useParams } from 'react-router';
+import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
+import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
 
 interface AddDirectoryFormProps {
   onHide: () => void;
 }
 
 export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) => {
-  const { onSubmit, handleSubmit, register, errors, form } = useDirectoryForm({
-    defaultValues: { name: '' },
-    onSubmitSuccess: onHide,
-  });
+  const params = useParams();
+  const {
+    state: { selectedNode },
+    dispatch,
+  } = useFileSystemNodes();
+  async function onSubmit(directoryForm: DirectoryForm) {
+    const parentId = selectedNode?._id ?? params.partitionId;
+    if (!parentId) throw new Error('parentId должен присутствовать (хотя бы в роуте)');
 
-  return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <FieldWrapper title="Name" errorMessage={errors.name?.message}>
-        <Input
-          {...register('name', { validate: (name) => !!name.trim() || 'Name is mandatory' })}
-          type="text"
-          placeholder="Название директории..."
-        />
-      </FieldWrapper>
+    const dir = await FileSystemNodeService.addDirectory({
+      name: directoryForm.name,
+      parentId,
+    });
 
-      <FormProvider {...form}>
-        <AddNodeFormFooter />
-      </FormProvider>
-    </form>
-  );
+    dispatch({ type: 'addNode', payload: { id: parentId, nodeToAdd: dir } });
+    onHide();
+  }
+
+  return <DirectoryForm onSubmit={onSubmit} currentDir={<CurrentNode />} actionName="Добавить" />;
 };
