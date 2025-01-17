@@ -8,11 +8,12 @@ export type FileForm = Pick<FileNode, 'name' | 'description'>;
 
 interface FileFormProps {
   onSubmit: (fileForm: FileForm) => void;
+  defaultValues?: FileForm;
 }
 
-export const FileForm: React.FC<FileFormProps> = ({ onSubmit }) => {
+export const FileForm: React.FC<FileFormProps> = ({ onSubmit, defaultValues }) => {
   const form = useForm<FileForm>({
-    defaultValues: { name: '', description: '' },
+    defaultValues: { name: defaultValues?.name ?? '', description: defaultValues?.description ?? '' },
     mode: 'onChange',
   });
   const {

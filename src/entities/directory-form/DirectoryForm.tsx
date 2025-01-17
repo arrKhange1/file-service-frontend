@@ -1,14 +1,14 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { FieldWrapper } from '../../shared/ui/input/FieldWrapper/FieldWrapper';
 import { Input } from '../../shared/ui/input/Input/Input';
-import { DirectoryNode, FileSystemNodeWithSubRows } from '../../shared/api/fs-nodes/fs-nodes.model';
+import { DirectoryNode } from '../../shared/api/fs-nodes/fs-nodes.model';
 import styles from './DirectoryForm.module.scss';
 
 export type DirectoryForm = Pick<DirectoryNode, 'name'>;
 
 interface DirectoryFormProps {
   onSubmit: (directoryForm: DirectoryForm) => void;
-  defaultValues?: FileSystemNodeWithSubRows;
+  defaultValues?: DirectoryForm;
 }
 
 export const DirectoryForm: React.FC<DirectoryFormProps> = ({ onSubmit, defaultValues }) => {
