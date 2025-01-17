@@ -1,7 +1,14 @@
 .accordionHeader {
-  margin-left: 1em;
   font-family: var(--jost-regular-400);
   color: var(--black-raisin-100);
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.accordionHeader:hover {
+  cursor: pointer;
 }
 
 .accordionContent {
@@ -10,4 +17,9 @@
   gap: 1em;
   max-height: 200px;
   overflow: auto;
+}
+
+.accordionCollapse {
+  width: 25px;
+  height: 25px;
 }
