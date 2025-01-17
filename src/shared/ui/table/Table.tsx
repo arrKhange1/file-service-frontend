@@ -6,10 +6,11 @@ interface TableProps {
   table: TanstackTable<any>;
   onRowClick?: (row: Row<any>) => void;
   onRowSelect?: (row: Row<any>) => void;
+  selectRowFn: (tableRow: Row<any>, selectedRow?: Row<any>) => boolean;
   allowSelection: boolean;
 }
 
-export const Table: React.FC<TableProps> = ({ table, onRowClick, onRowSelect, allowSelection }) => {
+export const Table: React.FC<TableProps> = ({ table, onRowClick, onRowSelect, allowSelection, selectRowFn }) => {
   return (
     <table className={styles['table-container']} cellSpacing={0}>
       <thead>
@@ -28,7 +29,13 @@ export const Table: React.FC<TableProps> = ({ table, onRowClick, onRowSelect, al
         ))}
       </thead>
       <tbody>
-        <TableBody table={table} onRowClick={onRowClick} onRowSelect={onRowSelect} allowSelection={allowSelection} />
+        <TableBody
+          table={table}
+          onRowClick={onRowClick}
+          onRowSelect={onRowSelect}
+          allowSelection={allowSelection}
+          selectRowFn={selectRowFn}
+        />
       </tbody>
     </table>
   );

@@ -6,12 +6,19 @@ import styles from './TableBody.module.scss';
 
 interface TableBodyProps {
   table: Table<any>;
+  selectRowFn: (tableRow: Row<any>, selectedRow?: Row<any>) => boolean;
   onRowClick?: (row: Row<any>) => void;
   onRowSelect?: (row: Row<any>) => void;
   allowSelection: boolean;
 }
 
-export const TableBody: React.FC<TableBodyProps> = ({ table, onRowClick, onRowSelect, allowSelection }) => {
+export const TableBody: React.FC<TableBodyProps> = ({
+  table,
+  onRowClick,
+  onRowSelect,
+  allowSelection,
+  selectRowFn,
+}) => {
   const [selectedRow, setSelectedRow] = useState<Row<any>>();
 
   function selectHandler(row: Row<any>) {
@@ -30,7 +37,7 @@ export const TableBody: React.FC<TableBodyProps> = ({ table, onRowClick, onRowSe
     <tr
       key={row.id}
       onClick={() => onClick(row)}
-      className={clsx({ [styles.rowSelected]: selectedRow?.id === row.id })}
+      className={clsx({ [styles.rowSelected]: selectRowFn(row, selectedRow) })}
     >
       {row.getVisibleCells().map((cell) => (
         <Cell key={cell.id} cell={cell} />

@@ -14,6 +14,7 @@ export const DeleteNode: React.FC<DeleteNodeProps> = () => {
     if (!selectedNode) return;
     await FileSystemNodeService.deleteNodeById({ id: selectedNode._id });
     dispatch({ type: 'deleteNode', payload: { id: selectedNode._id } });
+    dispatch({ type: 'setSelectedNode', payload: { selectedNode: undefined } });
   }
 
   return <Input type="button" value="Delete node" onClick={deleteNode} />;
