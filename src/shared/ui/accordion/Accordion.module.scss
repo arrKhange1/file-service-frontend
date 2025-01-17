@@ -1,10 +1,10 @@
-.listHeader {
+.accordionHeader {
   margin-left: 1em;
   font-family: var(--jost-regular-400);
   color: var(--black-raisin-100);
 }
 
-.list {
+.accordionContent {
   display: flex;
   flex-direction: column;
   gap: 1em;

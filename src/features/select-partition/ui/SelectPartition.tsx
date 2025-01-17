@@ -1,8 +1,8 @@
-import { AccordionList } from '../../../shared/ui/accordion-list/AccordionList';
 import { useQuery } from '@tanstack/react-query';
 import { FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.service';
 import { useNavigate, useParams } from 'react-router';
 import { DirectoryItem } from '../../../entities/directory-item/ui/DirectoryItem';
+import { Accordion } from '../../../shared/ui/accordion/Accordion';
 
 export interface SelectPartitionProps {
   headerText: string;
@@ -29,7 +29,7 @@ export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
   console.log('select partition');
 
   return (
-    <AccordionList headerText={headerText}>
+    <Accordion headerText={headerText}>
       {nodes?.length !== 0 &&
         nodes?.map(({ _id, name }) => (
           <DirectoryItem
@@ -39,6 +39,6 @@ export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
             name={name}
           />
         ))}
-    </AccordionList>
+    </Accordion>
   );
 };
