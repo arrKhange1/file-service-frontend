@@ -3,10 +3,11 @@ import styles from './Accordion.module.scss';
 
 interface AccordionProps {
   headerText: string;
+  collapsed?: boolean;
 }
 
-export const Accordion = ({ children, headerText }: PropsWithChildren<AccordionProps>) => {
-  const [contentCollapsed, toggleContentCollapsed] = useState(true);
+export const Accordion = ({ children, headerText, collapsed = true }: PropsWithChildren<AccordionProps>) => {
+  const [contentCollapsed, toggleContentCollapsed] = useState(collapsed);
   return (
     <section className={styles.accordion}>
       <header className={styles.accordionHeader} onClick={() => toggleContentCollapsed((prev) => !prev)}>

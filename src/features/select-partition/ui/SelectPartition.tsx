@@ -29,7 +29,7 @@ export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
   console.log('select partition');
 
   return (
-    <Accordion headerText={headerText}>
+    <Accordion headerText={headerText} collapsed={!routeParams.partitionId}>
       {nodes?.length !== 0 &&
         nodes?.map(({ _id, name }) => (
           <DirectoryItem
