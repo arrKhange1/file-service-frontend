@@ -1,5 +1,4 @@
 import { FileForm } from '../../../../entities/file-form/FileForm';
-import { CurrentNode } from '../current-node/CurrentNode';
 import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
 import { useParams } from 'react-router';
 import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
@@ -29,5 +28,5 @@ export const AddFileForm: React.FC<AddFileFormProps> = ({ onHide }) => {
     onHide();
   }
 
-  return <FileForm onSubmit={onSubmit} currentDir={<CurrentNode />} actionName="Добавить" />;
+  return <FileForm onSubmit={onSubmit} />;
 };

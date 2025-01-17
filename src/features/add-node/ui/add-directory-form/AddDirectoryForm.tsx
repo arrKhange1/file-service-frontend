@@ -1,5 +1,4 @@
 import { DirectoryForm } from '../../../../entities/directory-form/DirectoryForm';
-import { CurrentNode } from '../current-node/CurrentNode';
 import { useParams } from 'react-router';
 import { useFileSystemNodes } from '../../../../entities/file-system-node-table/model/file-system-nodes-context';
 import { FileSystemNodeService } from '../../../../shared/api/fs-nodes/fs-nodes.service';
@@ -27,5 +26,5 @@ export const AddDirectoryForm: React.FC<AddDirectoryFormProps> = ({ onHide }) =>
     onHide();
   }
 
-  return <DirectoryForm onSubmit={onSubmit} currentDir={<CurrentNode />} actionName="Добавить" />;
+  return <DirectoryForm onSubmit={onSubmit} />;
 };

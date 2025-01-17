@@ -1,20 +1,16 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { NodeFormFooter } from '../node-form-footer/NodeFormFooter';
 import { FieldWrapper } from '../../shared/ui/input/FieldWrapper/FieldWrapper';
 import { Input } from '../../shared/ui/input/Input/Input';
 import { DirectoryNode } from '../../shared/api/fs-nodes/fs-nodes.model';
 import styles from './DirectoryForm.module.scss';
-import { ReactNode } from 'react';
 
 export type DirectoryForm = Pick<DirectoryNode, 'name'>;
 
 interface DirectoryFormProps {
   onSubmit: (directoryForm: DirectoryForm) => void;
-  currentDir?: ReactNode;
-  actionName: string;
 }
 
-export const DirectoryForm: React.FC<DirectoryFormProps> = ({ onSubmit, actionName, currentDir }) => {
+export const DirectoryForm: React.FC<DirectoryFormProps> = ({ onSubmit }) => {
   const form = useForm<DirectoryForm>({
     defaultValues: { name: '' },
     mode: 'onChange',
@@ -22,7 +18,7 @@ export const DirectoryForm: React.FC<DirectoryFormProps> = ({ onSubmit, actionNa
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
   } = form;
   return (
     <FormProvider {...form}>
@@ -35,7 +31,7 @@ export const DirectoryForm: React.FC<DirectoryFormProps> = ({ onSubmit, actionNa
           />
         </FieldWrapper>
 
-        <NodeFormFooter actionName={actionName} currentDir={currentDir} />
+        <Input className={styles.submitBtn} type="submit" value="Применить" disabled={!isValid} />
       </form>
     </FormProvider>
   );

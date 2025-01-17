@@ -3,18 +3,14 @@ import { FieldWrapper } from '../../shared/ui/input/FieldWrapper/FieldWrapper';
 import { Input } from '../../shared/ui/input/Input/Input';
 import { FileNode } from '../../shared/api/fs-nodes/fs-nodes.model';
 import styles from './FileForm.module.scss';
-import { ReactNode } from 'react';
-import { NodeFormFooter } from '../node-form-footer/NodeFormFooter';
 
 export type FileForm = Pick<FileNode, 'name' | 'description'>;
 
 interface FileFormProps {
   onSubmit: (fileForm: FileForm) => void;
-  currentDir?: ReactNode;
-  actionName: string;
 }
 
-export const FileForm: React.FC<FileFormProps> = ({ onSubmit, currentDir, actionName }) => {
+export const FileForm: React.FC<FileFormProps> = ({ onSubmit }) => {
   const form = useForm<FileForm>({
     defaultValues: { name: '', description: '' },
     mode: 'onChange',
@@ -22,7 +18,7 @@ export const FileForm: React.FC<FileFormProps> = ({ onSubmit, currentDir, action
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isValid },
   } = form;
   return (
     <FormProvider {...form}>
@@ -42,7 +38,7 @@ export const FileForm: React.FC<FileFormProps> = ({ onSubmit, currentDir, action
           />
         </FieldWrapper>
 
-        <NodeFormFooter actionName={actionName} currentDir={currentDir} />
+        <Input className={styles.submitBtn} type="submit" value="Применить" disabled={!isValid} />
       </form>
     </FormProvider>
   );
