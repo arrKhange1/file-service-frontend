@@ -19,6 +19,7 @@ export const Modal: React.FC<ModalProps> = ({ header, visible, renderContent, on
       <div className={styles.backdrop}>
         <div className={styles.modal} style={{ width: width ?? 300, height: height ?? 400 }}>
           <span className={styles.modalHeader}>{header}</span>
+          <img className={styles.modalCloseIcon} src="src/app/icons/close.svg" onClick={hide} />
           {renderContent(hide)}
         </div>
       </div>
