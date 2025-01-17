@@ -1,23 +1,23 @@
 import { api } from '../base';
 import { DirectoryNode, FileSystemNode } from './fs-nodes.model';
 
-export interface FindNodesByParentRequestDTO {
+interface FindNodesByParentRequestDTO {
   parentId: string;
 }
 
-export interface DeleteNodeById {
+interface DeleteNodeById {
   id: string;
 }
 
-export interface AddDirectory {
+interface DirectoryMutationRequestDTO {
   name: string;
-  parentId: string;
+  parentId?: string;
 }
 
-export interface AddFile {
+interface FileMutationRequestDTO {
   name: string;
   description?: string;
-  parentId: string;
+  parentId?: string;
 }
 
 enum FileSystemNodeQueryKey {
@@ -41,13 +41,21 @@ export class FileSystemNodeService {
     return response.status;
   }
 
-  static async addDirectory(dirToAdd: AddDirectory): Promise<DirectoryNode> {
+  static async addDirectory(dirToAdd: DirectoryMutationRequestDTO): Promise<DirectoryNode> {
     const response = await api.post(`${FileSystemNodeService.fsNodesUrl}/directory`, dirToAdd);
     return response.data as DirectoryNode;
   }
 
-  static async addFile(fileToAdd: AddFile): Promise<DirectoryNode> {
+  static async addFile(fileToAdd: FileMutationRequestDTO): Promise<DirectoryNode> {
     const response = await api.post(`${FileSystemNodeService.fsNodesUrl}/file`, fileToAdd);
     return response.data as DirectoryNode;
+  }
+
+  static async patchDirectory(dirId: string, dirPatch: DirectoryMutationRequestDTO) {
+    const response = await api.patch(`${FileSystemNodeService.fsNodesUrl}/directory/${dirId}`, dirPatch);
+  }
+
+  static async patchFile(fileId: string, filePatch: FileMutationRequestDTO) {
+    const response = await api.patch(`${FileSystemNodeService.fsNodesUrl}/file/${fileId}`, filePatch);
   }
 }

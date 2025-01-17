@@ -5,7 +5,7 @@ type AddNodePayload = { id: string; nodeToAdd: FileSystemNodeWithSubRows };
 type DeleteNodePayload = { id: string };
 type PatchNodePayload = { id: string; nodePatch: Partial<FileSystemNodeWithSubRows> };
 type SetRootNodesPayload = { rootNodes: FileSystemNodeWithSubRows[] };
-type SetSelectedNodePayload = { selectedNode: FileSystemNodeWithSubRows | null };
+type SetSelectedNodePayload = { selectedNode: FileSystemNodeWithSubRows | undefined };
 type Action =
   | { type: 'addNode'; payload: AddNodePayload }
   | { type: 'deleteNode'; payload: DeleteNodePayload }
@@ -13,7 +13,7 @@ type Action =
   | { type: 'setRootNodes'; payload: SetRootNodesPayload }
   | { type: 'setSelectedNode'; payload: SetSelectedNodePayload };
 type Dispatch = (action: Action) => void;
-type State = { data: FileSystemNodeWithSubRows[]; selectedNode: FileSystemNodeWithSubRows | null };
+type State = { data: FileSystemNodeWithSubRows[]; selectedNode: FileSystemNodeWithSubRows | undefined };
 type FileSystemNodesProviderProps = { rootNodes: FileSystemNodeWithSubRows[]; children: React.ReactNode };
 
 const FileSystemNodesContext = React.createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined);
@@ -77,7 +77,7 @@ function fileSystemNodesReducer(state: State, action: Action): State {
 }
 
 const FileSystemNodesProvider: React.FC<FileSystemNodesProviderProps> = ({ rootNodes, children }) => {
-  const [state, dispatch] = React.useReducer(fileSystemNodesReducer, { data: rootNodes, selectedNode: null });
+  const [state, dispatch] = React.useReducer(fileSystemNodesReducer, { data: rootNodes, selectedNode: undefined });
   const value = { state, dispatch };
 
   const [previousRootNodes, setPreviousRootNodes] = React.useState(rootNodes);
