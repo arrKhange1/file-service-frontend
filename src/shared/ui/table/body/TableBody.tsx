@@ -4,29 +4,23 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import styles from './TableBody.module.scss';
 
-interface TableBodyProps {
-  table: Table<any>;
-  selectRowFn: (tableRow: Row<any>, selectedRow?: Row<any>) => boolean;
-  onRowClick?: (row: Row<any>) => void;
-  onRowSelect?: (row: Row<any>) => void;
+interface TableBodyProps<T> {
+  table: Table<T>;
+  selectRowFn: (tableRow: Row<T>, selectedRow?: Row<T>) => boolean;
+  onRowClick?: (row: Row<T>) => void;
+  onRowSelect?: (row: Row<T>) => void;
   allowSelection: boolean;
 }
 
-export const TableBody: React.FC<TableBodyProps> = ({
-  table,
-  onRowClick,
-  onRowSelect,
-  allowSelection,
-  selectRowFn,
-}) => {
-  const [selectedRow, setSelectedRow] = useState<Row<any>>();
+export function TableBody<T>({ table, onRowClick, onRowSelect, allowSelection, selectRowFn }: TableBodyProps<T>) {
+  const [selectedRow, setSelectedRow] = useState<Row<T>>();
 
-  function selectHandler(row: Row<any>) {
+  function selectHandler(row: Row<T>) {
     setSelectedRow(row);
     if (onRowSelect) onRowSelect(row);
   }
 
-  function onClick(row: Row<any>) {
+  function onClick(row: Row<T>) {
     if (onRowClick) onRowClick(row);
     if (allowSelection) {
       selectHandler(row);
@@ -44,4 +38,4 @@ export const TableBody: React.FC<TableBodyProps> = ({
       ))}
     </tr>
   ));
-};
+}

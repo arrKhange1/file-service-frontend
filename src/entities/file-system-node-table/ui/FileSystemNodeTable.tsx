@@ -88,9 +88,7 @@ export const FileSystemNodeTable: React.FC<FileSystemNodeTableProps> = ({
       onRowClick={onRowClick}
       onRowSelect={onRowSelect}
       allowSelection={allowSelection}
-      selectRowFn={(row: Row<FileSystemNodeWithSubRows>, selectedRow?: Row<FileSystemNodeWithSubRows>) =>
-        row.original._id === selectedRow?.original._id
-      }
+      selectRowFn={(row, selectedRow) => row.original._id === selectedRow?.original._id}
     />
   );
 };

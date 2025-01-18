@@ -2,15 +2,15 @@ import { flexRender, Row, Table as TanstackTable } from '@tanstack/react-table';
 import styles from './Table.module.scss';
 import { TableBody } from './body/TableBody';
 
-interface TableProps {
-  table: TanstackTable<any>;
-  onRowClick?: (row: Row<any>) => void;
-  onRowSelect?: (row: Row<any>) => void;
-  selectRowFn: (tableRow: Row<any>, selectedRow?: Row<any>) => boolean;
+interface TableProps<T> {
+  table: TanstackTable<T>;
+  onRowClick?: (row: Row<T>) => void;
+  onRowSelect?: (row: Row<T>) => void;
+  selectRowFn: (tableRow: Row<T>, selectedRow?: Row<T>) => boolean;
   allowSelection: boolean;
 }
 
-export const Table: React.FC<TableProps> = ({ table, onRowClick, onRowSelect, allowSelection, selectRowFn }) => {
+export function Table<T>({ table, onRowClick, onRowSelect, allowSelection, selectRowFn }: TableProps<T>) {
   return (
     <table className={styles['table-container']} cellSpacing={0}>
       <thead>
@@ -39,4 +39,4 @@ export const Table: React.FC<TableProps> = ({ table, onRowClick, onRowSelect, al
       </tbody>
     </table>
   );
-};
+}
