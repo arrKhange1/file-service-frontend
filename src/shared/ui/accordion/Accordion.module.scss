@@ -5,6 +5,7 @@
   align-items: center;
   gap: 1em;
   margin-bottom: 1em;
+  user-select: none;
 }
 
 .accordionHeader:hover {
@@ -16,6 +17,7 @@
   flex-direction: column;
   gap: 1em;
   max-height: 200px;
+  max-width: 200px;
   overflow: auto;
 }
 

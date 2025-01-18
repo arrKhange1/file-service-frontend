@@ -10,8 +10,6 @@ export interface SelectPartitionProps {
 
 type PartitionParams = 'partitionId';
 
-// TODO: при перезагрузке страницы если в params partitionId === одному из nodes, то открыть аккордион
-
 export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
   const navigate = useNavigate();
 
@@ -30,15 +28,14 @@ export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
 
   return (
     <Accordion headerText={headerText} collapsed={!routeParams.partitionId}>
-      {nodes?.length !== 0 &&
-        nodes?.map(({ _id, name }) => (
-          <DirectoryItem
-            isActive={_id === routeParams.partitionId}
-            onClick={() => handleRouteChange(_id)}
-            key={_id}
-            name={name}
-          />
-        ))}
+      {nodes?.map(({ _id, name }) => (
+        <DirectoryItem
+          isActive={_id === routeParams.partitionId}
+          onClick={() => handleRouteChange(_id)}
+          key={_id}
+          name={name}
+        />
+      ))}
     </Accordion>
   );
 };

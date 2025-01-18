@@ -12,7 +12,9 @@ export const DirectoryItem = ({ isActive = false, name, onClick }: DirectoryItem
   return (
     <>
       <div onClick={onClick} className={clsx(styles.item, { [styles.itemActive]: isActive })}>
-        <DirectoryIcon isActive={isActive} />
+        <span>
+          <DirectoryIcon isActive={isActive} />
+        </span>
         <span>{name}</span>
       </div>
     </>
