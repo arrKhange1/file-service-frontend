@@ -13,7 +13,6 @@ export const EditFileForm: React.FC<EditFileFormProps> = ({ onHide }) => {
     dispatch,
   } = useFileSystemNodes();
   async function onSubmit(fileForm: FileForm) {
-    console.log(fileForm);
     if (!selectedNode) return;
     await FileSystemNodeService.patchFile(selectedNode._id, fileForm);
     dispatch({ type: 'patchNode', payload: { id: selectedNode._id, nodePatch: fileForm } });

@@ -22,8 +22,6 @@ export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
     navigate(`/${partitionId}`);
   }
 
-  console.log('select partition');
-
   return (
     <Accordion headerText={headerText} collapsed={!routeParams.partitionId}>
       {nodes?.map(({ _id, name }) => (

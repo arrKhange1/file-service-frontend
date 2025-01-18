@@ -52,10 +52,10 @@ export class FileSystemNodeService {
   }
 
   static async patchDirectory(dirId: string, dirPatch: DirectoryMutationRequestDTO) {
-    const response = await api.patch(`${FileSystemNodeService.fsNodesUrl}/directory/${dirId}`, dirPatch);
+    await api.patch(`${FileSystemNodeService.fsNodesUrl}/directory/${dirId}`, dirPatch);
   }
 
   static async patchFile(fileId: string, filePatch: FileMutationRequestDTO) {
-    const response = await api.patch(`${FileSystemNodeService.fsNodesUrl}/file/${fileId}`, filePatch);
+    await api.patch(`${FileSystemNodeService.fsNodesUrl}/file/${fileId}`, filePatch);
   }
 }
