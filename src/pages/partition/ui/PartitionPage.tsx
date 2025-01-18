@@ -4,8 +4,7 @@ import { AllNodesTable } from '../../../widgets/all-nodes-table/ui/AllNodesTable
 import styles from './PartitionPage.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { FileSystemNodesProvider } from '../../../entities/file-system-node-table/model/file-system-nodes-context';
-
-type PartitionParams = 'partitionId';
+import { PartitionParams } from '../../../shared/api/fs-nodes/fs-nodes.model';
 
 export const PartitionPage = () => {
   const params = useParams<PartitionParams>();
@@ -14,8 +13,6 @@ export const PartitionPage = () => {
     queryKey: [FileSystemNodeService.queryKeys.FS_NODES, params],
     queryFn: () => FileSystemNodeService.findNodesByParentId({ parentId: params.partitionId! }),
   });
-
-  console.log(allFirstLevelNodes);
 
   return (
     <div className={styles.partitionPage}>

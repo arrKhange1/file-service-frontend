@@ -5,7 +5,7 @@ export const ControlPanel = () => {
   return (
     <aside className={styles.controlPanel}>
       <img src="src/app/icons/logo.svg" />
-      <SelectPartition headerText={'Your Dropbox'} />
+      <SelectPartition headerText={'Your partitions'} />
     </aside>
   );
 };

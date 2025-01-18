@@ -3,22 +3,20 @@ import { FileSystemNodeService } from '../../../shared/api/fs-nodes/fs-nodes.ser
 import { useNavigate, useParams } from 'react-router';
 import { DirectoryItem } from '../../../entities/directory-item/ui/DirectoryItem';
 import { Accordion } from '../../../shared/ui/accordion/Accordion';
+import { PartitionParams } from '../../../shared/api/fs-nodes/fs-nodes.model';
 
 export interface SelectPartitionProps {
   headerText: string;
 }
 
-type PartitionParams = 'partitionId';
-
 export const SelectPartition = ({ headerText }: SelectPartitionProps) => {
   const navigate = useNavigate();
+  const routeParams = useParams<PartitionParams>();
 
   const { data: nodes } = useQuery({
     queryKey: [FileSystemNodeService.queryKeys.FS_NODES],
     queryFn: () => FileSystemNodeService.findNodesByParentId(),
   });
-
-  const routeParams = useParams<PartitionParams>();
 
   function handleRouteChange(partitionId: string) {
     navigate(`/${partitionId}`);

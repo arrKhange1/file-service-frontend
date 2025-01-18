@@ -13,3 +13,5 @@ export interface FileNode extends FileSystemNode {
 }
 
 export type FileSystemNodeWithSubRows = DirectoryNode | FileNode;
+
+export type PartitionParams = 'partitionId';
